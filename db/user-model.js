@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const Joi = require("joi");
+
 const userShema = new Schema(
   {
     email: {
@@ -43,6 +43,10 @@ const userShema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "notice",
     },
+    myFavorite: {
+      type: Schema.Types.ObjectId,
+      ref: "notice",
+    },
   },
 
   { versionKey: false, timestamps: true }
@@ -54,12 +58,5 @@ const handleSaveErrors = (error, data, next) => {
 };
 userShema.post("save", handleSaveErrors);
 const User = model("user", userShema);
-const userSchema = Joi.object({
-  email: Joi.string().required(),
-  password: Joi.string().min(7).max(32).required(),
-  name: Joi.string().required(),
-  location: Joi.string().required(),
-  phone: Joi.string().required(),
-});
 
-module.exports = { User, userSchema };
+module.exports = User;

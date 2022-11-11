@@ -1,5 +1,6 @@
 const { ApiErrorsTemplate } = require("../helpers/errors");
-const { User } = require("../db/user");
+const User = require("../db/user-model");
+const { CreateUser } = require("../services/users-service");
 
 const register = async (req, res) => {
   const { email, password, name, location, phone } = req.body;
@@ -7,13 +8,7 @@ const register = async (req, res) => {
   if (user) {
     throw new ApiErrorsTemplate(409, "Email in use");
   }
-  const result = await User.create({
-    email,
-    password,
-    name,
-    location,
-    phone,
-  });
+  const result = await CreateUser(email, password, name, location, phone);
   res.status(201).json({
     email: result.email,
   });

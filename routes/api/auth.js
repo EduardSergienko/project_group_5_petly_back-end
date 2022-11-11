@@ -4,7 +4,7 @@ const { asyncWrapper } = require("../../helpers/api-helpers");
 const { register } = require("../../controllers/auth-controller");
 
 const validateBody = require("../../middlewares/validateBody");
-const { userSchema } = require("../../db/user");
+const { registerSchema } = require("../../helpers/joi-validation");
 
-router.post("/register", validateBody(userSchema), asyncWrapper(register));
+router.post("/register", validateBody(registerSchema), asyncWrapper(register));
 module.exports = router;
