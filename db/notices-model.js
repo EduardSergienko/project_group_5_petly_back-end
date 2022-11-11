@@ -5,15 +5,21 @@ const noticeScheme = new mongoose.Schema(
     tittle: {
       type: String,
       required: [true, "Tittle is required"],
+      minlength: 2,
+      maxlength: 48,
     },
     petName: {
       type: String,
+      minlength: 2,
+      maxlength: 16,
     },
     birthDate: {
       type: Date,
     },
     breed: {
       type: String,
+      minlength: 2,
+      maxlength: 24,
     },
     sex: {
       type: String,
@@ -34,12 +40,19 @@ const noticeScheme = new mongoose.Schema(
     },
     comments: {
       type: String,
+      minlength: 8,
+      maxlength: 120,
+      required: [true, "Comments is required"],
     },
     category: {
       type: String,
       enum: ["sell", "lost/found", "In good hands"],
       default: "sell",
       required: [true, "Category is required"],
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
     },
   },
   { timestamps: true }
