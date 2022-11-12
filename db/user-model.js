@@ -11,7 +11,7 @@ const userShema = new Schema(
       type: String,
       required: [true, "Set password for user"],
       minlength: 7,
-      maxlength: 32,
+      // maxlength: 32,
     },
     name: {
       type: String,
@@ -25,6 +25,10 @@ const userShema = new Schema(
       type: String,
       required: [true, "phone"],
       unique: true,
+    },
+    token: {
+      type: String,
+      default: "",
     },
     avatarURL: {
       type: String,
