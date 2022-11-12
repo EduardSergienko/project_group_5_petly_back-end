@@ -1,10 +1,7 @@
-const {
-  listNoticesByCategory,
-  getOneNotice,
-} = require("../services/notices-service");
+const notices = require("../services/notices-service");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
-const getNoticesByCategory = async (req, res) => {
+const getNoticesByCategoryController = async (req, res) => {
   const { categoryName: category } = req.params;
   let { page = 1, limit = 8 } = req.query;
 
@@ -15,7 +12,7 @@ const getNoticesByCategory = async (req, res) => {
   limit = parseInt(limit) > 8 ? 8 : parseInt(limit);
   const skip = (parseInt(page) - 1) * parseInt(limit);
 
-  const data = await listNoticesByCategory(category, skip, limit);
+  const data = await notices.getByCategory(category, skip, limit);
 
   if (!data.length) {
     throw new ApiErrorsTemplate(404, "Not found");
@@ -27,10 +24,10 @@ const getNoticesByCategory = async (req, res) => {
   });
 };
 
-const getNoticeById = async (req, res) => {
+const getNoticeByIdController = async (req, res) => {
   const { id } = req.params;
 
-  const data = await getOneNotice(id);
+  const data = await notices.getById(id);
 
   if (!data || !data.length) {
     throw new ApiErrorsTemplate(404, "Not found");
@@ -42,6 +39,6 @@ const getNoticeById = async (req, res) => {
 };
 
 module.exports = {
-  getNoticesByCategory,
-  getNoticeById,
+  getNoticesByCategoryController,
+  getNoticeByIdController,
 };

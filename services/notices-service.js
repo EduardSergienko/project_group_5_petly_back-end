@@ -1,6 +1,6 @@
 const { Notice } = require("../db/notices-model");
 
-const listNoticesByCategory = async (category, skip, limit) => {
+const getByCategory = async (category, skip, limit) => {
   try {
     const data = await Notice.find({ category })
       .select({ __v: 0 })
@@ -12,7 +12,7 @@ const listNoticesByCategory = async (category, skip, limit) => {
   }
 };
 
-const getOneNotice = async (id) => {
+const getById = async (id) => {
   try {
     const data = await Notice.find({ _id: id });
     return data;
@@ -22,6 +22,6 @@ const getOneNotice = async (id) => {
 };
 
 module.exports = {
-  listNoticesByCategory,
-  getOneNotice,
+  getByCategory,
+  getById,
 };
