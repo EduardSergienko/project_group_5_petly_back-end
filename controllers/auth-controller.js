@@ -28,12 +28,7 @@ const login = async (req, res) => {
   if (!passwordCompare) {
     throw new ApiErrorsTemplate(401, "Email or password is wrong");
   }
-  // const payload = {
-  //   id: user._id,
-  // };
-  // console.log(SECRET_KEY);
-  // const token = jwt.sign(payload, SECRET_KEY);
-  // await User.findByIdAndUpdate(user._id, { token });
+
   const token = await CreateToken(user);
 
   res.status(201).json({
