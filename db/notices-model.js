@@ -33,6 +33,7 @@ const noticeScheme = new mongoose.Schema(
     },
     price: {
       type: Number,
+      min: 1,
       required: [true, "Price is required"],
     },
     petImageUrl: {
@@ -46,7 +47,7 @@ const noticeScheme = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["sell", "lost/found", "In good hands"],
+      enum: ["sell", "lost-found", "for-free"],
       default: "sell",
       required: [true, "Category is required"],
     },
