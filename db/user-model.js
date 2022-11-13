@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const userShema = new Schema(
+const userSchema = new Schema(
   {
     email: {
       type: String,
@@ -60,7 +60,7 @@ const handleSaveErrors = (error, data, next) => {
   error.status = name === "MongoServerError" && code === 11000 ? 409 : 400;
   next();
 };
-userShema.post("save", handleSaveErrors);
-const User = model("user", userShema);
+userSchema.post("save", handleSaveErrors);
+const User = model("user", userSchema);
 
 module.exports = User;
