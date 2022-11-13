@@ -4,11 +4,9 @@ const handleSaveErrors = require("../helpers/handleSaveErrors");
 const newsScheme = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, "Title is required"],
   },
   url: {
     type: String,
-    required: [true, "Pet image is required"],
   },
   description: {
     type: String,
