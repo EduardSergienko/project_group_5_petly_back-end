@@ -1,14 +1,22 @@
 const express = require("express");
-const animalModel = require("../../db/animal-model");
-const ApiErrorsTemplate = require("../../helpers/errors");
+// const Animal = require("../../db/animal-model");
+// const ApiErrorsTemplate = require("../../helpers/errors");
+const ctrl = require("../../controllers/animalControllers");
+const { addAnimalJoiSchema } = require("../../db/animal-model");
 const { asyncWrapper } = require("../../helpers/api-helpers");
-
+const { authenticate } = require("../../middlewares/auth-middleware");
+const isValidId = require("../../middlewares/isValidId");
+const validateBody = require("../../middlewares/validateBody");
 const router = express.Router();
 
-router.get("/");
+// router.get("/");
 
-router.post("/", asyncWrapper());
-
-router.delete("/:id");
+router.post(
+  "/",
+  authenticate,
+  validateBody(addAnimalJoiSchema),
+  asyncWrapper(ctrl.addAnimal)
+);
+router.delete("/:id", authenticate, isValidId, asyncWrapper(ctrl.removeAnimal));
 
 module.exports = router;

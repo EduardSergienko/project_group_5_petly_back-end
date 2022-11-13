@@ -23,10 +23,10 @@ const animalSchema = new Schema(
       type: String,
       require: true,
     },
-    avatarURL: {
-      type: String,
-      required: true,
-    },
+    // avatarURL: {
+    //   type: String,
+    //   required: true,
+    // },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
@@ -40,9 +40,14 @@ animalSchema.post("save", handleSaveErrors);
 
 const addAnimalJoiSchema = Joi.object({
   name: Joi.string().required(),
-  birthDay: Joi.string().required(),
+  birthDay: Joi.string().pattern(regBirthDay).required(),
+  breed: Joi.string().required(),
+  comments: Joi.string().required(),
 });
 
 const Animal = model("animal", animalSchema);
 
-model.export = Animal;
+module.exports = {
+  Animal,
+  addAnimalJoiSchema,
+};
