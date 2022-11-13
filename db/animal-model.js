@@ -1,33 +1,33 @@
 const { Schema, model } = require("mongoose");
-const Joi = require('joi');
 const handleSaveErrors = require("../helpers/handleSaveErrors");
 
-const regBirthDay = /(\d{2}).(\d{2}).(\d{4})/
+const regBirthDay = /(\d{2}).(\d{2}).(\d{4})/;
 
-const animalSchema = new Schema({
+const animalSchema = new Schema(
+  {
     name: {
-        type: String,
-        require: true,
-   },
-    dateOfBirth:{
-        type: String,
-        require: true,
-        formData: regBirthDay
+      type: String,
+      require: true,
     },
-    breed:{
-        type: String,
-        require: true,
+    dateOfBirth: {
+      type: String,
+      require: true,
+      formData: regBirthDay,
     },
-    comments:{
-        type: String,
+    breed: {
+      type: String,
+      require: true,
     },
-     owner: {
-        type: Schema.Types.ObjectId,
-        ref: "user",
-        required: true,
+    comments: {
+      type: String,
     },
-
-},{ versionKey: false, timestamps: true }
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+  },
+  { versionKey: false, timestamps: true }
 );
 
 animalSchema.post("save", handleSaveErrors);

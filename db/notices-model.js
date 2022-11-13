@@ -1,10 +1,13 @@
 const mongoose = require("mongoose");
+const handleSaveErrors = require("../helpers/handleSaveErrors");
+
+const regBirthDay = /(\d{2}).(\d{2}).(\d{4})/;
 
 const noticeScheme = new mongoose.Schema(
   {
-    tittle: {
+    title: {
       type: String,
-      required: [true, "Tittle is required"],
+      required: [true, "Title is required"],
       minlength: 2,
       maxlength: 48,
     },
@@ -12,14 +15,18 @@ const noticeScheme = new mongoose.Schema(
       type: String,
       minlength: 2,
       maxlength: 16,
+      required: [true, "Pet name is required"],
     },
     birthDate: {
-      type: Date,
+      type: String,
+      required: [true, "Date of birth is required"],
+      formData: regBirthDay,
     },
     breed: {
       type: String,
       minlength: 2,
       maxlength: 24,
+      required: [true, "Breed is required"],
     },
     sex: {
       type: String,
@@ -38,6 +45,7 @@ const noticeScheme = new mongoose.Schema(
     },
     petImageUrl: {
       type: String,
+      required: [true, "Pet image is required"],
     },
     comments: {
       type: String,
@@ -58,6 +66,8 @@ const noticeScheme = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+noticeScheme.post("save", handleSaveErrors);
 
 const Notice = mongoose.model("notice", noticeScheme);
 
