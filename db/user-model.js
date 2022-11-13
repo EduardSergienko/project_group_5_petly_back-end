@@ -34,23 +34,11 @@ const userSchema = new Schema(
       type: String,
       //   required: true,
     },
-    verify: {
-      type: Boolean,
-      default: false,
-    },
-    verificationToken: {
-      type: String,
-      default: "",
-      //   required: [true, "Verify token is required"],
-    },
     myPets: {
       type: Schema.Types.ObjectId,
       ref: "notice",
     },
-    myFavorite: {
-      type: Schema.Types.ObjectId,
-      ref: "notice",
-    },
+    myFavorite: [{ type: Schema.Types.ObjectId, ref: "notice" }],
   },
 
   { versionKey: false, timestamps: true }

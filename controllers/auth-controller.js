@@ -1,58 +1,64 @@
 const { ApiErrorsTemplate } = require("../helpers/errors");
-const User = require("../db/user-model");
-const { CreateUser, CreateToken } = require("../services/users-service");
-const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
-// const { SECRET_KEY } = process.env;
+const {
+  CreateUser,
+  getCurrentUser,
+  logout,
+  login,
+} = require("../services/users-service");
 
-const register = async (req, res) => {
+const registerСontroller = async (req, res) => {
   const { email, password, name, location, phone } = req.body;
-  const user = await User.findOne({ email });
-  if (user) {
+
+  const result = await CreateUser(email, password, name, location, phone);
+
+  if (result.code === "409") {
     throw new ApiErrorsTemplate(409, "Email in use");
   }
-  const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
-  const result = await CreateUser(email, hashPassword, name, location, phone);
   res.status(201).json({
-    email: result.email,
+    result,
   });
 };
 
-const login = async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) {
-    throw new ApiErrorsTemplate(401, "Email or password is wrong");
-  }
-  const passwordCompare = await bcrypt.compare(password, user.password);
-  if (!passwordCompare) {
-    throw new ApiErrorsTemplate(401, "Email or password is wrong");
-  }
+const loginСontroller = async (req, res) => {
+  const { email: userEmail, password } = req.body;
 
-  const token = await CreateToken(user);
+  const { token, email } = await login(userEmail, password);
+
+  if (!token) {
+    throw new ApiErrorsTemplate(401, "Email or password is wrong");
+  }
 
   res.status(201).json({
     token,
-    email: user.email,
-  });
-};
-const getCurrent = async (req, res) => {
-  const { name, email } = req.user;
-  res.status(201).json({
-    name,
     email,
   });
 };
-const logout = async (req, res) => {
-  const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { token: "" });
+const getCurrentСontroller = async (req, res) => {
+  const token = req.token;
+  const user = await getCurrentUser(token);
+
+  if (!user) {
+    throw new ApiErrorsTemplate(401, "Not authorized");
+  }
+  res.status(200).json({
+    user,
+  });
+};
+const logoutСontroller = async (req, res) => {
+  const { id } = req.user;
+
+  const response = await logout(id);
+
+  if (response) {
+    throw new ApiErrorsTemplate(401, "Not authorized");
+  }
   res.status(204).json({
     message: "Logout success",
   });
 };
 module.exports = {
-  register,
-  login,
-  getCurrent,
-  logout,
+  registerСontroller,
+  loginСontroller,
+  getCurrentСontroller,
+  logoutСontroller,
 };

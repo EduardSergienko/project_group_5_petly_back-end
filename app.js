@@ -6,6 +6,7 @@ const { errorHandler } = require("./helpers/api-helpers");
 const noticesRouter = require("./routes/api/notices.js");
 const authRouter = require("./routes/api/auth");
 const animalRouter = require("./routes/api/animals");
+const newsRouter = require("./routes/api/news");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.static("public"));
 
 app.use("/api/notices", noticesRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/news", newsRouter);
 
 app.use("/api/animals", animalRouter);
 

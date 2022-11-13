@@ -2,18 +2,22 @@ const express = require("express");
 const router = express.Router();
 const { asyncWrapper } = require("../../helpers/api-helpers");
 const {
-  register,
-  login,
-  getCurrent,
-  logout,
+  registerСontroller,
+  loginСontroller,
+  getCurrentСontroller,
+  logoutСontroller,
 } = require("../../controllers/auth-controller");
 const { authenticate } = require("../../middlewares/auth-middleware");
 
 const validateBody = require("../../middlewares/validateBody");
 const { registerSchema, loginSchema } = require("../../helpers/joi-validation");
 
-router.post("/register", validateBody(registerSchema), asyncWrapper(register));
-router.post("/login", validateBody(loginSchema), asyncWrapper(login));
-router.get("/current", authenticate, asyncWrapper(getCurrent));
-router.get("/logout", authenticate, asyncWrapper(logout));
+router.post(
+  "/register",
+  validateBody(registerSchema),
+  asyncWrapper(registerСontroller)
+);
+router.post("/login", validateBody(loginSchema), asyncWrapper(loginСontroller));
+router.get("/current", authenticate, asyncWrapper(getCurrentСontroller));
+router.get("/logout", authenticate, asyncWrapper(logoutСontroller));
 module.exports = router;
