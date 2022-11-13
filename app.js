@@ -5,6 +5,7 @@ require("dotenv").config();
 const { errorHandler } = require("./helpers/api-helpers");
 const noticesRouter = require("./routes/api/notices.js");
 const authRouter = require("./routes/api/auth");
+const newsRouter = require("./routes/api/news");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.static("public"));
 
 app.use("/api/notices", noticesRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/news", newsRouter);
 
 // после всех роутов //
 app.use(errorHandler);
