@@ -1,29 +1,68 @@
 const User = require("../db/user-model");
-const jwt = require("jsonwebtoken");
-// const { token } = require("morgan");
-const { SECRET_KEY } = process.env;
+const bcrypt = require("bcryptjs");
+const { createToken } = require("../helpers/api-helpers");
 
-const CreateUser = async (email, hashPassword, name, location, phone) => {
-  const result = await User.create({
-    email,
-    password: hashPassword,
-    name,
-    location,
-    phone,
-  });
-  return result;
-};
-const CreateToken = async (user) => {
-  const payload = {
-    id: user._id,
-  };
-  console.log(SECRET_KEY);
-  const token = jwt.sign(payload, SECRET_KEY);
-  await User.findByIdAndUpdate(user._id, { token });
+const CreateUser = async (email, password, name, location, phone) => {
+  try {
+    const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
+    const user = new User({
+      email,
+      password: hashPassword,
+      name,
+      location,
+      phone,
+    });
 
-  return token;
+    const token = createToken(user._id);
+    user.token = token;
+    await user.save();
+
+    return user;
+  } catch (error) {
+    return error;
+  }
 };
+
+const login = async (email, password) => {
+  try {
+    const [user] = await User.find({ email }, { __v: 0, token: 0 });
+
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new Error();
+    }
+
+    const token = createToken(user._id);
+
+    user.token = token;
+    await user.save();
+
+    return user;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+const getCurrentUser = async (token) => {
+  try {
+    const [user] = await User.find({ token });
+
+    return user;
+  } catch (error) {
+    return error;
+  }
+};
+
+const logout = async (_id) => {
+  try {
+    await User.findByIdAndUpdate(_id, { token: "" });
+  } catch (error) {
+    return error.message;
+  }
+};
+
 module.exports = {
   CreateUser,
-  CreateToken,
+  getCurrentUser,
+  logout,
+  login,
 };
