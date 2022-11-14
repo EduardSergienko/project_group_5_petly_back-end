@@ -14,8 +14,8 @@ const registerСontroller = async (req, res) => {
 
   const result = await CreateUser(email, password, name, location, phone);
 
-  if (result.code === "409") {
-    throw new ApiErrorsTemplate(409, "Email in use");
+  if (result.status === Number("409")) {
+    throw new ApiErrorsTemplate(409, "Email or phone in use");
   }
   res.status(201).json({
     result,

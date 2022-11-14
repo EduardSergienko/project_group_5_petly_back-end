@@ -39,7 +39,6 @@ const userShema = new Schema(
       default: "00.00.0000",
       formData: regBirthDay,
     },
-
     myPets: {
       type: Schema.Types.ObjectId,
       ref: "notice",
