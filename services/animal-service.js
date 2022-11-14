@@ -4,12 +4,14 @@ const removeAnimal = async (_id) => {
   try {
     const result = await Animal.findByIdAndDelete(_id);
     return result;
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };
 
-const addAnimal = async (_id) => {
+const addAnimal = async (filds, owner) => {
   try {
-    const result = await Animal.create({ owner: _id });
+    const result = await Animal.create({ ...filds, owner });
     return result;
   } catch (error) {
     return error;

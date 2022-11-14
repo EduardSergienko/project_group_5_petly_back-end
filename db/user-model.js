@@ -25,7 +25,7 @@ const userSchema = new Schema(
     phone: {
       type: String,
       required: [true, "phone"],
-      unique: true,
+      // unique: true,
     },
     token: {
       type: String,
