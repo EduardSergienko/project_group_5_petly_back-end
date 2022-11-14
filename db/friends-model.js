@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const handleSaveErrors = require("../helpers/handleSaveErrors");
+const handleSaveErrors = require("../helpers/handle-save-errors");
 
 const friendsShema = new Schema({
   title: {

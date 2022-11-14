@@ -1,18 +1,22 @@
 const { Animal } = require("../db");
 
-const removeAnimal = async (id) => {
+const removeAnimal = async (_id) => {
   try {
-    const result = await Animal.findByIdAndDelete(id);
+    const result = await Animal.findByIdAndDelete(_id);
     return result;
   } catch (error) {}
 };
 
-const addAnimal = async () => {
+const addAnimal = async (_id) => {
   try {
-    const result = await Animal.create({ ...req.body, owner });
-  } catch (error) {}
+    const result = await Animal.create({ owner: _id });
+    return result;
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports = {
   removeAnimal,
+  addAnimal,
 };
