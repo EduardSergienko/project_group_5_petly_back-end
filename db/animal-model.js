@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
-const handleSaveErrors = require("../helpers/handleSaveErrors");
+const handleSaveErrors = require("../helpers/handle-save-errors");
 
 const regBirthDay = /(\d{2}).(\d{2}).(\d{4})/;
 
@@ -27,11 +27,9 @@ const animalSchema = new Schema(
     //   type: String,
     //   required: true,
     // },
-
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
-      required: true,
     },
   },
   { versionKey: false, timestamps: true }

@@ -9,7 +9,7 @@ const {
 } = require("../../controllers/auth-controller");
 const { authenticate } = require("../../middlewares/auth-middleware");
 
-const validateBody = require("../../middlewares/validateBody");
+const validateBody = require("../../middlewares/validate-body");
 const { registerSchema, loginSchema } = require("../../helpers/joi-validation");
 
 router.post(

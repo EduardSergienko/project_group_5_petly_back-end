@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const handleSaveErrors = require("../helpers/handleSaveErrors");
+const handleSaveErrors = require("../helpers/handle-save-errors");
 
 const newsScheme = new mongoose.Schema({
   title: {
