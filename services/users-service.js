@@ -1,16 +1,26 @@
 const User = require("../db/user-model");
 const bcrypt = require("bcryptjs");
 const { createToken } = require("../helpers/api-helpers");
-
+const gravatar = require("gravatar");
+const fs = require("fs/promises");
+// const Jimp = require("jimp");
+const path = require("path");
+const resizeAvatar = require("../helpers/resize-avatar");
 const CreateUser = async (email, password, name, location, phone) => {
   try {
     const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
+    const avatarURL = gravatar.url(
+      `${email}`,
+      { protocol: "https", s: "240" },
+      true
+    );
     const user = new User({
       email,
       password: hashPassword,
       name,
       location,
       phone,
+      avatarURL,
     });
 
     const token = createToken(user._id);
@@ -59,10 +69,42 @@ const logout = async (_id) => {
     return error.message;
   }
 };
-
+const updateUser = async (_id, fields) => {
+  try {
+    const responce = await User.findByIdAndUpdate(
+      { _id },
+      { ...fields },
+      { new: true }
+    );
+    return responce;
+  } catch (error) {
+    return error.message;
+  }
+};
+const updateAvatar = async (_id, user, fields) => {
+  try {
+    const newAvatarPath = path.resolve(`./public/avatars/${_id}avatar.png`);
+    await resizeAvatar(user.pathAvatar);
+    await fs.rename(user.pathAvatar, newAvatarPath);
+    const avatarURL = newAvatarPath;
+    // console.log(user);
+    const data = await User.findByIdAndUpdate(
+      { _id },
+      { avatarURL },
+      { new: true }
+    );
+    // console.log(data);
+    return data;
+  } catch (error) {
+    await fs.unlink(user.pathAvatar);
+    return error.message;
+  }
+};
 module.exports = {
   CreateUser,
   getCurrentUser,
   logout,
   login,
+  updateUser,
+  updateAvatar,
 };
