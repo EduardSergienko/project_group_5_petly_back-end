@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+const regBirthDay = /(\d{2}).(\d{2}).(\d{4})/;
 const userSchema = new Schema(
   {
     email: {
@@ -11,7 +12,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Set password for user"],
       minlength: 7,
-      // maxlength: 32,
     },
     name: {
       type: String,
@@ -32,8 +32,14 @@ const userSchema = new Schema(
     },
     avatarURL: {
       type: String,
-      //   required: true,
+      required: true,
     },
+    dateOfBirth: {
+      type: String,
+      default: "00.00.0000",
+      formData: regBirthDay,
+    },
+
     myPets: {
       type: Schema.Types.ObjectId,
       ref: "notice",
