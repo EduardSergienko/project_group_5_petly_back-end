@@ -87,13 +87,13 @@ const updateAvatar = async (_id, user, fields) => {
     await resizeAvatar(user.pathAvatar);
     await fs.rename(user.pathAvatar, newAvatarPath);
     const avatarURL = newAvatarPath;
-    // console.log(user);
+
     const data = await User.findByIdAndUpdate(
       { _id },
       { avatarURL },
       { new: true }
     );
-    // console.log(data);
+
     return data;
   } catch (error) {
     await fs.unlink(user.pathAvatar);

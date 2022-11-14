@@ -1,9 +1,5 @@
 const { ApiErrorsTemplate } = require("../helpers/errors");
-// const User = require("../db/user-model");
-// const fs = require("fs/promises");
-// const Jimp = require("jimp");
-// const path = require("path");
-// const resizeAvatar = require("../helpers/resize-avatar");
+
 const {
   CreateUser,
   getCurrentUser,
@@ -18,8 +14,8 @@ const registerСontroller = async (req, res) => {
 
   const result = await CreateUser(email, password, name, location, phone);
 
-  if (result.code === "409") {
-    throw new ApiErrorsTemplate(409, "Email in use");
+  if (result.status === Number("409")) {
+    throw new ApiErrorsTemplate(409, "Email or phone in use");
   }
   res.status(201).json({
     result,
@@ -73,12 +69,10 @@ const updateUserByIdСontroller = async (req, res) => {
   res.json(response);
 };
 const updateAvatarСontroller = async (req, res) => {
-  // console.log(req.file);
   const { id } = req.user;
   const user = {
     pathAvatar: req.file.path,
   };
-  // console.log(user);
 
   const data = await updateAvatar(id, user);
   res.status(201).json({ data });
