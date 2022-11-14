@@ -15,7 +15,7 @@ const {
   uploadAvatarMiddleware,
 } = require("../../middlewares/upload-avatar-middleware");
 
-const validateBody = require("../../middlewares/validateBody");
+const validateBody = require("../../middlewares/validate-body");
 const {
   registerSchema,
   loginSchema,

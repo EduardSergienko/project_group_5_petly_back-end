@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
-const handleSaveErrors = require("../helpers/handleSaveErrors");
+const Joi = require("joi");
+const handleSaveErrors = require("../helpers/handle-save-errors");
 
 const regBirthDay = /(\d{2}).(\d{2}).(\d{4})/;
 
@@ -9,7 +10,7 @@ const animalSchema = new Schema(
       type: String,
       require: true,
     },
-    dateOfBirth: {
+    birthDay: {
       type: String,
       require: true,
       formData: regBirthDay,
@@ -20,11 +21,15 @@ const animalSchema = new Schema(
     },
     comments: {
       type: String,
+      require: true,
     },
+    // avatarURL: {
+    //   type: String,
+    //   required: true,
+    // },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
-      required: true,
     },
   },
   { versionKey: false, timestamps: true }
@@ -32,6 +37,16 @@ const animalSchema = new Schema(
 
 animalSchema.post("save", handleSaveErrors);
 
+const addAnimalJoiSchema = Joi.object({
+  name: Joi.string().required(),
+  birthDay: Joi.string().pattern(regBirthDay).required(),
+  breed: Joi.string().required(),
+  comments: Joi.string().required(),
+});
+
 const Animal = model("animal", animalSchema);
 
-model.export = Animal;
+module.exports = {
+  Animal,
+  addAnimalJoiSchema,
+};
