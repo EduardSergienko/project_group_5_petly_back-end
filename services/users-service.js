@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const { createToken } = require("../helpers/api-helpers");
 const gravatar = require("gravatar");
 const fs = require("fs/promises");
-// const Jimp = require("jimp");
 const path = require("path");
 const resizeAvatar = require("../helpers/resize-avatar");
 const CreateUser = async (email, password, name, location, phone) => {
@@ -81,20 +80,14 @@ const updateUser = async (_id, fields) => {
     return error.message;
   }
 };
-const updateAvatar = async (_id, user, fields) => {
+
+const updateAvatar = async (_id, user) => {
   try {
     const newAvatarPath = path.resolve(`./public/avatars/${_id}avatar.png`);
     await resizeAvatar(user.pathAvatar);
     await fs.rename(user.pathAvatar, newAvatarPath);
     const avatarURL = newAvatarPath;
-
-    const data = await User.findByIdAndUpdate(
-      { _id },
-      { avatarURL },
-      { new: true }
-    );
-
-    return data;
+    return avatarURL;
   } catch (error) {
     await fs.unlink(user.pathAvatar);
     return error.message;

@@ -6,8 +6,7 @@ const {
   loginСontroller,
   getCurrentСontroller,
   logoutСontroller,
-  updateUserByIdСontroller,
-  updateAvatarСontroller,
+  updateDataUserСontroller,
 } = require("../../controllers/auth-controller");
 const { authenticate } = require("../../middlewares/auth-middleware");
 const isValidIdMiddleware = require("../../middlewares/isValidId-middleware");
@@ -16,11 +15,7 @@ const {
 } = require("../../middlewares/upload-avatar-middleware");
 
 const validateBody = require("../../middlewares/validate-body");
-const {
-  registerSchema,
-  loginSchema,
-  updateUserSchema,
-} = require("../../helpers/joi-validation");
+const { registerSchema, loginSchema } = require("../../helpers/joi-validation");
 
 router.post(
   "/register",
@@ -30,19 +25,12 @@ router.post(
 router.post("/login", validateBody(loginSchema), asyncWrapper(loginСontroller));
 router.get("/current", authenticate, asyncWrapper(getCurrentСontroller));
 router.get("/logout", authenticate, asyncWrapper(logoutСontroller));
+
 router.patch(
-  "/:id",
+  "/user/:id",
   authenticate,
   isValidIdMiddleware,
-  validateBody(updateUserSchema),
-  asyncWrapper(updateUserByIdСontroller)
-);
-router.patch(
-  "/user/avatars",
-  authenticate,
   uploadAvatarMiddleware.single("avatar"),
-  // validateBody(updateUserSchema),
-  asyncWrapper(updateAvatarСontroller)
+  asyncWrapper(updateDataUserСontroller)
 );
-
 module.exports = router;

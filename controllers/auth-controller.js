@@ -59,22 +59,27 @@ const logoutСontroller = async (req, res) => {
     message: "Logout success",
   });
 };
-const updateUserByIdСontroller = async (req, res) => {
-  const { id } = req.params;
-  const response = await updateUser(id, req.body);
 
-  if (!response) {
-    throw new ApiErrorsTemplate(404, "Not found");
-  }
-  res.json(response);
-};
-const updateAvatarСontroller = async (req, res) => {
+const updateDataUserСontroller = async (req, res) => {
   const { id } = req.user;
-  const user = {
-    pathAvatar: req.file.path,
-  };
+  const form = req.body;
+  let avatarURL = "";
 
-  const data = await updateAvatar(id, user);
+  if (req.file) {
+    const userUrl = {
+      pathAvatar: req.file.path,
+    };
+    avatarURL = await updateAvatar(id, userUrl);
+  }
+
+  const formdata = { ...form, avatarURL };
+  Object.keys(formdata).forEach((key) => {
+    if (formdata[key] === "") {
+      delete formdata[key];
+    }
+  });
+
+  const data = await updateUser(id, formdata);
   res.status(201).json({ data });
 };
 module.exports = {
@@ -82,6 +87,5 @@ module.exports = {
   loginСontroller,
   getCurrentСontroller,
   logoutСontroller,
-  updateUserByIdСontroller,
-  updateAvatarСontroller,
+  updateDataUserСontroller,
 };
