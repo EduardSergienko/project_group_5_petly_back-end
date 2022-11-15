@@ -8,6 +8,7 @@ const { isValidId } = require("../../middlewares/is-valid-id");
 const validateBody = require("../../middlewares/validate-body");
 
 const router = express.Router();
+
 router.post(
   "/",
   authenticate,
@@ -20,5 +21,7 @@ router.delete(
   isValidId,
   asyncWrapper(ctrl.removeAnimalController)
 );
+
+router.get("/", authenticate, asyncWrapper(ctrl.listAnimalController));
 
 module.exports = router;

@@ -23,13 +23,14 @@ const animalSchema = new Schema(
       type: String,
       require: true,
     },
-    // avatarURL: {
-    //   type: String,
-    //   required: true,
-    // },
+    avatarURL: {
+      type: String,
+      // required: true,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",
+      require: true,
     },
   },
   { versionKey: false, timestamps: true }

@@ -7,7 +7,7 @@ const {
   login,
   updateUser,
   updateAvatar,
-} = require("../services/users-service");
+} = require("../services/auth-service");
 
 const registerСontroller = async (req, res) => {
   const { email, password, name, location, phone } = req.body;
