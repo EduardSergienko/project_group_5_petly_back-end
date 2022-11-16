@@ -71,8 +71,8 @@ const updateDataUserСontroller = async (req, res) => {
     };
 
     req.body.avatarURL = await updateAvatar(id, userUrl);
-    if (!req.body.avatarURL) {
-      throw new ApiErrorsTemplate(400, "Error");
+    if (!req.body.avatarURL.length) {
+      throw new ApiErrorsTemplate(400, "Failed to update avatar");
     }
   }
 
@@ -80,7 +80,7 @@ const updateDataUserСontroller = async (req, res) => {
 
   if (!data) {
     await fs.unlink(req.body.avatarURL);
-    throw new ApiErrorsTemplate(400, "Error");
+    throw new ApiErrorsTemplate(400, "Failed to update user data");
   }
   res.status(201).json({ data });
 };

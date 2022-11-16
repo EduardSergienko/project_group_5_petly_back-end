@@ -91,7 +91,7 @@ const updateAvatar = async (_id, user) => {
     return avatarURL;
   } catch (error) {
     await fs.unlink(user.pathAvatar);
-    return error.message;
+    return error;
   }
 };
 module.exports = {
