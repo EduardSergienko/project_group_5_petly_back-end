@@ -6,10 +6,16 @@ const {
   loginСontroller,
   // getCurrentСontroller,
   logoutСontroller,
+  // <<<<<<< HEAD
   // updateUserByIdСontroller,
   // updateAvatarСontroller,
 } = require("../../controllers/auth-controller");
 
+// =======
+//   updateDataUserСontroller,
+// } = require("../../controllers/auth-controller");
+// const updateUserMiddleware = require("../../middlewares/update-user-middleware");
+// >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
 const { authenticate } = require("../../middlewares/auth-middleware");
 // const isValidIdMiddleware = require("../../middlewares/isValidId-middleware");
 // const {
@@ -31,6 +37,7 @@ router.post(
 router.post("/login", validateBody(loginSchema), asyncWrapper(loginСontroller));
 // router.get("/current", authenticate, asyncWrapper(getCurrentСontroller));
 router.get("/logout", authenticate, asyncWrapper(logoutСontroller));
+// <<<<<<< HEAD
 // router.patch(
 //   "/:id",
 //   authenticate,
@@ -46,4 +53,16 @@ router.get("/logout", authenticate, asyncWrapper(logoutСontroller));
 //   asyncWrapper(updateAvatarСontroller)
 // );
 
+// =======
+
+// router.patch(
+//   "/user/:id",
+//   authenticate,
+//   isValidIdMiddleware,
+//   uploadAvatarMiddleware.single("avatar"),
+//   updateUserMiddleware,
+//   validateBody(updateUserSchema),
+//   asyncWrapper(updateDataUserСontroller)
+// );
+// >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
 module.exports = router;

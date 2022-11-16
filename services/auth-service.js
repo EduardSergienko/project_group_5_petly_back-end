@@ -2,11 +2,17 @@ const User = require("../db/user-model");
 const bcrypt = require("bcryptjs");
 const { createToken } = require("../helpers/api-helpers");
 const gravatar = require("gravatar");
+// <<<<<<< HEAD:services/auth-service.js
 // const fs = require("fs/promises");
 // const Jimp = require("jimp");
 // const path = require("path");
 // const resizeAvatar = require("../helpers/resize-avatar");
 
+// =======
+// const fs = require("fs/promises");
+// const path = require("path");
+// const resizeAvatar = require("../helpers/resize-avatar");
+// >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9:services/users-service.js
 const CreateUser = async (email, password, name, location, phone) => {
   try {
     const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
@@ -70,6 +76,7 @@ const logout = async (_id) => {
     return error.message;
   }
 };
+// <<<<<<< HEAD:services/auth-service.js
 // const updateUser = async (_id, fields) => {
 //   try {
 //     const responce = await User.findByIdAndUpdate(
@@ -101,6 +108,34 @@ const logout = async (_id) => {
 //     return error.message;
 //   }
 // };
+// =======
+
+// const updateUser = async (_id, fields) => {
+//   try {
+//     const responce = await User.findByIdAndUpdate(
+//       { _id },
+//       { ...fields },
+//       { new: true }
+//     );
+//     return responce;
+//   } catch (error) {
+//     return error.message;
+//   }
+// };
+
+// const updateAvatar = async (_id, user) => {
+//   try {
+//     const newAvatarPath = path.resolve(`./public/avatars/${_id}avatar.png`);
+//     await resizeAvatar(user.pathAvatar);
+//     await fs.rename(user.pathAvatar, newAvatarPath);
+//     const avatarURL = newAvatarPath;
+//     return avatarURL;
+//   } catch (error) {
+//     await fs.unlink(user.pathAvatar);
+//     return error.message;
+//   }
+// };
+// >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9:services/users-service.js
 module.exports = {
   CreateUser,
   // getCurrentUser,

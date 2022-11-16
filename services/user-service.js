@@ -63,25 +63,50 @@ const updateUser = async (_id, fields) => {
   }
 };
 
-const updateAvatar = async (_id, user, fields) => {
+// const updateUser = async (_id, fields) => {
+//   try {
+//     const responce = await User.findByIdAndUpdate(
+//       { _id },
+//       { ...fields },
+//       { new: true }
+//     );
+//     return responce;
+//   } catch (error) {
+//     return error.message;
+//   }
+// };
+const updateAvatar = async (_id, user) => {
   try {
     const newAvatarPath = path.resolve(`./public/avatars/${_id}avatar.png`);
     await resizeAvatar(user.pathAvatar);
     await fs.rename(user.pathAvatar, newAvatarPath);
     const avatarURL = newAvatarPath;
-
-    const data = await User.findByIdAndUpdate(
-      { _id },
-      { avatarURL },
-      { new: true }
-    );
-
-    return data;
+    return avatarURL;
   } catch (error) {
     await fs.unlink(user.pathAvatar);
     return error.message;
   }
 };
+
+// const updateAvatar = async (_id, user, fields) => {
+//   try {
+//     const newAvatarPath = path.resolve(`./public/avatars/${_id}avatar.png`);
+//     await resizeAvatar(user.pathAvatar);
+//     await fs.rename(user.pathAvatar, newAvatarPath);
+//     const avatarURL = newAvatarPath;
+
+//     const data = await User.findByIdAndUpdate(
+//       { _id },
+//       { avatarURL },
+//       { new: true }
+//     );
+
+//     return data;
+//   } catch (error) {
+//     await fs.unlink(user.pathAvatar);
+//     return error.message;
+//   }
+// };
 
 const usersPersonalInfo = async (_id) => {
   try {

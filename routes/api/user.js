@@ -8,6 +8,7 @@ const { addAnimalJoiSchema } = require("../../db/animal-model");
 const validateBody = require("../../middlewares/validate-body");
 const { isValidId } = require("../../middlewares/is-valid-id");
 const isValidIdMiddleware = require("../../middlewares/isValidId-middleware");
+const updateUserMiddleware = require("../../middlewares/update-user-middleware");
 const {
   uploadAvatarMiddleware,
 } = require("../../middlewares/upload-avatar-middleware");
@@ -26,12 +27,22 @@ router.post(
   asyncWrapper(ctrl.addAnimalController)
 );
 
+// router.patch(
+//   "/:id",
+//   authenticate,
+//   isValidIdMiddleware,
+//   validateBody(updateUserSchema),
+//   asyncWrapper(ctrl.updateUserByIdСontroller)
+// );
+
 router.patch(
-  "/:id",
+  "/user/:id",
   authenticate,
   isValidIdMiddleware,
+  uploadAvatarMiddleware.single("avatar"),
+  updateUserMiddleware,
   validateBody(updateUserSchema),
-  asyncWrapper(ctrl.updateUserByIdСontroller)
+  asyncWrapper(ctrl.updateDataUserСontroller)
 );
 
 router.patch(

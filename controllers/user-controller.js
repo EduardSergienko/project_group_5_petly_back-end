@@ -1,9 +1,10 @@
+const fs = require("fs/promises");
+
 const { ApiErrorsTemplate } = require("../helpers/errors");
 const userService = require("../services/user-service");
 
 const addAnimalController = async (req, res) => {
   const { id: owner } = req.user;
-  console.log(req.user);
   const result = await userService.addAnimal(req.body, owner);
   res.status(201).json(result);
 };
@@ -38,14 +39,37 @@ const listAnimalController = async (req, res) => {
 //   res.status(200).json({ user });
 // };
 // ================================================
-const updateUserByIdСontroller = async (req, res) => {
-  const { id } = req.params;
-  const response = await userService.updateUser(id, req.body);
+// const updateUserByIdСontroller = async (req, res) => {
+//   const { id } = req.params;
+//   const response = await userService.updateUser(id, req.body);
 
-  if (!response) {
-    throw new ApiErrorsTemplate(404, "Not found");
+//   if (!response) {
+//     throw new ApiErrorsTemplate(404, "Not found");
+//   }
+//   res.json(response);
+// };
+
+const updateDataUserСontroller = async (req, res) => {
+  const { id } = req.user;
+
+  if (req.file) {
+    const userUrl = {
+      pathAvatar: req.file.path,
+    };
+
+    req.body.avatarURL = await userService.updateAvatar(id, userUrl);
+    if (!req.body.avatarURL) {
+      throw new ApiErrorsTemplate(400, "Error");
+    }
   }
-  res.json(response);
+
+  const data = await userService.updateUser(id, req.body);
+
+  if (!data) {
+    await fs.unlink(req.body.avatarURL);
+    throw new ApiErrorsTemplate(400, "Error");
+  }
+  res.status(201).json({ data });
 };
 
 const updateAvatarСontroller = async (req, res) => {
@@ -63,6 +87,6 @@ module.exports = {
   removeAnimalController,
   listAnimalController,
   updateAvatarСontroller,
-  updateUserByIdСontroller,
+  updateDataUserСontroller,
   // getCurrentСontroller,
 };

@@ -5,9 +5,17 @@ const {
   // getCurrentUser,
   logout,
   login,
+  // <<<<<<< HEAD
   // updateUser,
   // updateAvatar,
 } = require("../services/auth-service");
+// =======
+//   updateUser,
+//   updateAvatar,
+// } = require("../services/users-service");
+// const fs = require("fs/promises");
+// const path = require("path");
+// >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
 
 const registerСontroller = async (req, res) => {
   const { email, password, name, location, phone } = req.body;
@@ -69,6 +77,7 @@ const logoutСontroller = async (req, res) => {
     message: "Logout success",
   });
 };
+// <<<<<<< HEAD
 // const updateUserByIdСontroller = async (req, res) => {
 //   const { id } = req.params;
 //   const response = await updateUser(id, req.body);
@@ -87,11 +96,41 @@ const logoutСontroller = async (req, res) => {
 //   const data = await updateAvatar(id, user);
 //   res.status(201).json({ data });
 // };
+// =======
+
+// const updateDataUserСontroller = async (req, res) => {
+//   const { id } = req.user;
+
+//   if (req.file) {
+//     const userUrl = {
+//       pathAvatar: req.file.path,
+//     };
+
+//     req.body.avatarURL = await updateAvatar(id, userUrl);
+//     if (!req.body.avatarURL) {
+//       throw new ApiErrorsTemplate(400, "Error");
+//     }
+//   }
+
+//   const data = await updateUser(id, req.body);
+
+//   if (!data) {
+//     await fs.unlink(req.body.avatarURL);
+//     throw new ApiErrorsTemplate(400, "Error");
+//   }
+//   res.status(201).json({ data });
+// };
+
+// >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
 module.exports = {
   registerСontroller,
   loginСontroller,
   // getCurrentСontroller,
   logoutСontroller,
+  // <<<<<<< HEAD
   // updateUserByIdСontroller,
   // updateAvatarСontroller,
+  // =======
+  // updateDataUserСontroller,
+  // >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
 };
