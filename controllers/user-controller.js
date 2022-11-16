@@ -6,6 +6,14 @@ const userService = require("../services/user-service");
 const addAnimalController = async (req, res) => {
   const { id: owner } = req.user;
   const result = await userService.addAnimal(req.body, owner);
+
+  if (result === "Unsupported MIME type") {
+    throw new ApiErrorsTemplate(400, "Unsupported MIME type");
+  }
+
+  // if (!result.name) {
+  //   throw new ApiErrorsTemplate(400, "Error");
+  // }
   res.status(201).json(result);
 };
 
@@ -58,8 +66,8 @@ const updateDataUserСontroller = async (req, res) => {
     };
 
     req.body.avatarURL = await userService.updateAvatar(id, userUrl);
-    if (!req.body.avatarURL) {
-      throw new ApiErrorsTemplate(400, "Error");
+    if (!req.body.avatarURL.length) {
+      throw new ApiErrorsTemplate(400, "Failed to update avatar");
     }
   }
 
@@ -67,7 +75,7 @@ const updateDataUserСontroller = async (req, res) => {
 
   if (!data) {
     await fs.unlink(req.body.avatarURL);
-    throw new ApiErrorsTemplate(400, "Error");
+    throw new ApiErrorsTemplate(400, "Failed to update user data");
   }
   res.status(201).json({ data });
 };

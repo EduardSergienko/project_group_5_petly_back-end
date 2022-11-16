@@ -1,5 +1,5 @@
-const { Animal } = require("./animal-model");
+// const { Animal } = require("./animal-model");
 
-module.exports = {
-  Animal,
-};
+// module.exports = {
+//   Animal,
+// };

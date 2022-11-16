@@ -2,17 +2,25 @@ const fs = require("fs/promises");
 const path = require("path");
 
 const User = require("../db/user-model");
-const { Animal } = require("../db");
+const { Animal } = require("../db/animal-model");
 const resizeAvatar = require("../helpers/resize-avatar");
 
 const addAnimal = async (fields, owner) => {
   try {
+    const newAvatarPath = path.resolve(
+      `./user/animal/avatar-${new Date().getTime().toString()}.png`
+    );
+    await resizeAvatar(fields.petImageUrl);
+    await fs.rename(fields.petImageUrl, newAvatarPath);
+
+    fields.petImageUrl = newAvatarPath;
+
     const result = await Animal.create({ ...fields });
     await User.findByIdAndUpdate(
       { _id: owner },
       { $addToSet: { myAnimal: result._id } }
     );
-    console.log(result._id);
+
     return result;
   } catch (error) {
     return error;

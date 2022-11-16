@@ -78,6 +78,7 @@ const logoutСontroller = async (req, res) => {
   });
 };
 // <<<<<<< HEAD
+// <<<<<<< HEAD
 // const updateUserByIdСontroller = async (req, res) => {
 //   const { id } = req.params;
 //   const response = await updateUser(id, req.body);
@@ -122,6 +123,32 @@ const logoutСontroller = async (req, res) => {
 // };
 
 // >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
+// =======
+
+// const updateDataUserСontroller = async (req, res) => {
+//   const { id } = req.user;
+
+//   if (req.file) {
+//     const userUrl = {
+//       pathAvatar: req.file.path,
+//     };
+
+//     req.body.avatarURL = await updateAvatar(id, userUrl);
+//     if (!req.body.avatarURL.length) {
+//       throw new ApiErrorsTemplate(400, "Failed to update avatar");
+//     }
+//   }
+
+//   const data = await updateUser(id, req.body);
+
+//   if (!data) {
+//     await fs.unlink(req.body.avatarURL);
+//     throw new ApiErrorsTemplate(400, "Failed to update user data");
+//   }
+//   res.status(201).json({ data });
+// };
+
+// >>>>>>> 2fca086817d17eddce219f55b0d36f6aa5964bff
 module.exports = {
   registerСontroller,
   loginСontroller,
