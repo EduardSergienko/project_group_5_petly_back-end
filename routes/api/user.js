@@ -6,8 +6,7 @@ const ctrl = require("../../controllers/user-controller");
 const { updateUserSchema } = require("../../helpers/joi-validation");
 const { addAnimalJoiSchema } = require("../../db/animal-model");
 const validateBody = require("../../middlewares/validate-body");
-const { isValidId } = require("../../middlewares/is-valid-id");
-const isValidIdMiddleware = require("../../middlewares/isValidId-middleware");
+const isValidIdMiddleware = require("../../middlewares/is-valid-id-middleware");
 const updateUserMiddleware = require("../../middlewares/update-user-middleware");
 const {
   uploadAvatarMiddleware,
@@ -15,28 +14,21 @@ const {
 
 const router = express.Router();
 
-// router.get("/", authenticate, asyncWrapper(ctrl.usersPersonalInfoController));
-router.get("/", authenticate, asyncWrapper(ctrl.listAnimalController));
-
-// router.get("/current", authenticate, asyncWrapper(ctrl.getCurrentСontroller));
+router.get(
+  "/current",
+  authenticate,
+  asyncWrapper(ctrl.getCurrentUserController)
+);
 
 router.post(
-  "/",
+  "/animal/",
   authenticate,
   validateBody(addAnimalJoiSchema),
   asyncWrapper(ctrl.addAnimalController)
 );
 
-// router.patch(
-//   "/:id",
-//   authenticate,
-//   isValidIdMiddleware,
-//   validateBody(updateUserSchema),
-//   asyncWrapper(ctrl.updateUserByIdСontroller)
-// );
-
 router.patch(
-  "/user/:id",
+  "/:id",
   authenticate,
   isValidIdMiddleware,
   uploadAvatarMiddleware.single("avatar"),
@@ -45,18 +37,10 @@ router.patch(
   asyncWrapper(ctrl.updateDataUserСontroller)
 );
 
-router.patch(
-  "/user/avatars",
-  authenticate,
-  uploadAvatarMiddleware.single("avatar"),
-  validateBody(updateUserSchema),
-  asyncWrapper(ctrl.updateAvatarСontroller)
-);
-
 router.delete(
-  "/:id",
+  "/animal/:id",
   authenticate,
-  isValidId,
+  isValidIdMiddleware,
   asyncWrapper(ctrl.removeAnimalController)
 );
 

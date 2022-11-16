@@ -11,9 +11,6 @@ const addAnimalController = async (req, res) => {
     throw new ApiErrorsTemplate(400, "Unsupported MIME type");
   }
 
-  // if (!result.name) {
-  //   throw new ApiErrorsTemplate(400, "Error");
-  // }
   res.status(201).json(result);
 };
 
@@ -28,34 +25,14 @@ const removeAnimalController = async (req, res) => {
   });
 };
 // ====================================================
-const listAnimalController = async (req, res) => {
+const getCurrentUserController = async (req, res) => {
   const { id } = req.user;
-  const result = await userService.listAnimal(id);
+  const result = await userService.getCurrentUser(id);
   if (!result) {
     throw new ApiErrorsTemplate(404, "Not found");
   }
   res.status(200).json({ result });
 };
-
-// const getCurrentСontroller = async (req, res) => {
-//   const token = req.token;
-//   const user = await userService.getCurrentUser(token);
-
-//   if (!user) {
-//     throw new ApiErrorsTemplate(401, "Not authorized");
-//   }
-//   res.status(200).json({ user });
-// };
-// ================================================
-// const updateUserByIdСontroller = async (req, res) => {
-//   const { id } = req.params;
-//   const response = await userService.updateUser(id, req.body);
-
-//   if (!response) {
-//     throw new ApiErrorsTemplate(404, "Not found");
-//   }
-//   res.json(response);
-// };
 
 const updateDataUserСontroller = async (req, res) => {
   const { id } = req.user;
@@ -93,8 +70,7 @@ const updateAvatarСontroller = async (req, res) => {
 module.exports = {
   addAnimalController,
   removeAnimalController,
-  listAnimalController,
+  getCurrentUserController,
   updateAvatarСontroller,
   updateDataUserСontroller,
-  // getCurrentСontroller,
 };
