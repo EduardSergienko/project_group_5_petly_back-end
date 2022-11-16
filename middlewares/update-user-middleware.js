@@ -1,5 +1,3 @@
-// const { ApiErrorsTemplate } = require("../helpers/errors");
-
 const updateUserMiddleware = (req, res, next) => {
   if (req.file) {
     req.body.avatarURL = req.file.path;
@@ -10,7 +8,7 @@ const updateUserMiddleware = (req, res, next) => {
       delete req.body[key];
     }
   });
-//   console.log(req.body);
+
   next();
 };
 
