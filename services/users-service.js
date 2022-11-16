@@ -68,6 +68,7 @@ const logout = async (_id) => {
     return error.message;
   }
 };
+
 const updateUser = async (_id, fields) => {
   try {
     const responce = await User.findByIdAndUpdate(

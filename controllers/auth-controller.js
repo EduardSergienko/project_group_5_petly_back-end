@@ -8,6 +8,8 @@ const {
   updateUser,
   updateAvatar,
 } = require("../services/users-service");
+const fs = require("fs/promises");
+// const path = require("path");
 
 const registerСontroller = async (req, res) => {
   const { email, password, name, location, phone } = req.body;
@@ -62,26 +64,27 @@ const logoutСontroller = async (req, res) => {
 
 const updateDataUserСontroller = async (req, res) => {
   const { id } = req.user;
-  const form = req.body;
-  let avatarURL = "";
 
   if (req.file) {
     const userUrl = {
       pathAvatar: req.file.path,
     };
-    avatarURL = await updateAvatar(id, userUrl);
+
+    req.body.avatarURL = await updateAvatar(id, userUrl);
+    if (!req.body.avatarURL) {
+      throw new ApiErrorsTemplate(400, "Error");
+    }
   }
 
-  const formdata = { ...form, avatarURL };
-  Object.keys(formdata).forEach((key) => {
-    if (formdata[key] === "") {
-      delete formdata[key];
-    }
-  });
+  const data = await updateUser(id, req.body);
 
-  const data = await updateUser(id, formdata);
+  if (!data) {
+    await fs.unlink(req.body.avatarURL);
+    throw new ApiErrorsTemplate(400, "Error");
+  }
   res.status(201).json({ data });
 };
+
 module.exports = {
   registerСontroller,
   loginСontroller,

@@ -8,6 +8,7 @@ const {
   logoutСontroller,
   updateDataUserСontroller,
 } = require("../../controllers/auth-controller");
+const updateUserMiddleware = require("../../middlewares/update-user-middleware");
 const { authenticate } = require("../../middlewares/auth-middleware");
 const isValidIdMiddleware = require("../../middlewares/isValidId-middleware");
 const {
@@ -15,7 +16,11 @@ const {
 } = require("../../middlewares/upload-avatar-middleware");
 
 const validateBody = require("../../middlewares/validate-body");
-const { registerSchema, loginSchema } = require("../../helpers/joi-validation");
+const {
+  registerSchema,
+  loginSchema,
+  updateUserSchema,
+} = require("../../helpers/joi-validation");
 
 router.post(
   "/register",
@@ -31,6 +36,8 @@ router.patch(
   authenticate,
   isValidIdMiddleware,
   uploadAvatarMiddleware.single("avatar"),
+  updateUserMiddleware,
+  validateBody(updateUserSchema),
   asyncWrapper(updateDataUserСontroller)
 );
 module.exports = router;
