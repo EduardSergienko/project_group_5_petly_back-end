@@ -6,9 +6,9 @@ const {
   loginСontroller,
   getCurrentСontroller,
   logoutСontroller,
-  updateUserByIdСontroller,
-  updateAvatarСontroller,
+  updateDataUserСontroller,
 } = require("../../controllers/auth-controller");
+const updateUserMiddleware = require("../../middlewares/update-user-middleware");
 const { authenticate } = require("../../middlewares/auth-middleware");
 const isValidIdMiddleware = require("../../middlewares/isValidId-middleware");
 const {
@@ -30,19 +30,14 @@ router.post(
 router.post("/login", validateBody(loginSchema), asyncWrapper(loginСontroller));
 router.get("/current", authenticate, asyncWrapper(getCurrentСontroller));
 router.get("/logout", authenticate, asyncWrapper(logoutСontroller));
+
 router.patch(
-  "/:id",
+  "/user/:id",
   authenticate,
   isValidIdMiddleware,
-  validateBody(updateUserSchema),
-  asyncWrapper(updateUserByIdСontroller)
-);
-router.patch(
-  "/user/avatars",
-  authenticate,
   uploadAvatarMiddleware.single("avatar"),
-  // validateBody(updateUserSchema),
-  asyncWrapper(updateAvatarСontroller)
+  updateUserMiddleware,
+  validateBody(updateUserSchema),
+  asyncWrapper(updateDataUserСontroller)
 );
-
 module.exports = router;
