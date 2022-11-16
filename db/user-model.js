@@ -40,11 +40,16 @@ const userSchema = new Schema(
       default: "00.00.0000",
       formData: regBirthDay,
     },
-    myPets: {
-      type: Schema.Types.ObjectId,
-      ref: "notice",
-    },
+    // myPets: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "animal",
+    // },
     myFavorite: [{ type: Schema.Types.ObjectId, ref: "notice" }],
+    myAnimal: [{ type: Schema.Types.ObjectId, ref: "animal" }],
+    // animal: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "animal",
+    // },
   },
 
   { versionKey: false, timestamps: true }

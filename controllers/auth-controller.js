@@ -2,14 +2,20 @@ const { ApiErrorsTemplate } = require("../helpers/errors");
 
 const {
   CreateUser,
-  getCurrentUser,
+  // getCurrentUser,
   logout,
   login,
-  updateUser,
-  updateAvatar,
-} = require("../services/users-service");
-const fs = require("fs/promises");
+  // <<<<<<< HEAD
+  // updateUser,
+  // updateAvatar,
+} = require("../services/auth-service");
+// =======
+//   updateUser,
+//   updateAvatar,
+// } = require("../services/users-service");
+// const fs = require("fs/promises");
 // const path = require("path");
+// >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
 
 const registerСontroller = async (req, res) => {
   const { email, password, name, location, phone } = req.body;
@@ -22,6 +28,16 @@ const registerСontroller = async (req, res) => {
   res.status(201).json({
     result,
   });
+
+  // res.status(201).json({
+  //   status: "success",
+  //   code: 201,
+  //   user: {
+  //     email: result.email,
+  //     subscription: result.subscription,
+  //     verificationToken: result.verificationToken,
+  //   },
+  // });
 };
 
 const loginСontroller = async (req, res) => {
@@ -38,17 +54,17 @@ const loginСontroller = async (req, res) => {
     email,
   });
 };
-const getCurrentСontroller = async (req, res) => {
-  const token = req.token;
-  const user = await getCurrentUser(token);
+// const getCurrentСontroller = async (req, res) => {
+//   const token = req.token;
+//   const user = await getCurrentUser(token);
 
-  if (!user) {
-    throw new ApiErrorsTemplate(401, "Not authorized");
-  }
-  res.status(200).json({
-    user,
-  });
-};
+//   if (!user) {
+//     throw new ApiErrorsTemplate(401, "Not authorized");
+//   }
+//   res.status(200).json({
+//     user,
+//   });
+// };
 const logoutСontroller = async (req, res) => {
   const { id } = req.user;
 
@@ -61,34 +77,87 @@ const logoutСontroller = async (req, res) => {
     message: "Logout success",
   });
 };
+// <<<<<<< HEAD
+// <<<<<<< HEAD
+// const updateUserByIdСontroller = async (req, res) => {
+//   const { id } = req.params;
+//   const response = await updateUser(id, req.body);
 
-const updateDataUserСontroller = async (req, res) => {
-  const { id } = req.user;
+//   if (!response) {
+//     throw new ApiErrorsTemplate(404, "Not found");
+//   }
+//   res.json(response);
+// };
+// const updateAvatarСontroller = async (req, res) => {
+//   const { id } = req.user;
+//   const user = {
+//     pathAvatar: req.file.path,
+//   };
 
-  if (req.file) {
-    const userUrl = {
-      pathAvatar: req.file.path,
-    };
+//   const data = await updateAvatar(id, user);
+//   res.status(201).json({ data });
+// };
+// =======
 
-    req.body.avatarURL = await updateAvatar(id, userUrl);
-    if (!req.body.avatarURL.length) {
-      throw new ApiErrorsTemplate(400, "Failed to update avatar");
-    }
-  }
+// const updateDataUserСontroller = async (req, res) => {
+//   const { id } = req.user;
 
-  const data = await updateUser(id, req.body);
+//   if (req.file) {
+//     const userUrl = {
+//       pathAvatar: req.file.path,
+//     };
 
-  if (!data) {
-    await fs.unlink(req.body.avatarURL);
-    throw new ApiErrorsTemplate(400, "Failed to update user data");
-  }
-  res.status(201).json({ data });
-};
+//     req.body.avatarURL = await updateAvatar(id, userUrl);
+//     if (!req.body.avatarURL) {
+//       throw new ApiErrorsTemplate(400, "Error");
+//     }
+//   }
 
+//   const data = await updateUser(id, req.body);
+
+//   if (!data) {
+//     await fs.unlink(req.body.avatarURL);
+//     throw new ApiErrorsTemplate(400, "Error");
+//   }
+//   res.status(201).json({ data });
+// };
+
+// >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
+// =======
+
+// const updateDataUserСontroller = async (req, res) => {
+//   const { id } = req.user;
+
+//   if (req.file) {
+//     const userUrl = {
+//       pathAvatar: req.file.path,
+//     };
+
+//     req.body.avatarURL = await updateAvatar(id, userUrl);
+//     if (!req.body.avatarURL.length) {
+//       throw new ApiErrorsTemplate(400, "Failed to update avatar");
+//     }
+//   }
+
+//   const data = await updateUser(id, req.body);
+
+//   if (!data) {
+//     await fs.unlink(req.body.avatarURL);
+//     throw new ApiErrorsTemplate(400, "Failed to update user data");
+//   }
+//   res.status(201).json({ data });
+// };
+
+// >>>>>>> 2fca086817d17eddce219f55b0d36f6aa5964bff
 module.exports = {
   registerСontroller,
   loginСontroller,
-  getCurrentСontroller,
+  // getCurrentСontroller,
   logoutСontroller,
-  updateDataUserСontroller,
+  // <<<<<<< HEAD
+  // updateUserByIdСontroller,
+  // updateAvatarСontroller,
+  // =======
+  // updateDataUserСontroller,
+  // >>>>>>> e3b920864620ef66a171dab4dbce7c8f7ce38cb9
 };
