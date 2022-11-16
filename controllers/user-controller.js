@@ -2,7 +2,8 @@ const { ApiErrorsTemplate } = require("../helpers/errors");
 const userService = require("../services/user-service");
 
 const addAnimalController = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { id: owner } = req.user;
+  console.log(req.user);
   const result = await userService.addAnimal(req.body, owner);
   res.status(201).json(result);
 };

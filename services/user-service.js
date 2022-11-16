@@ -5,9 +5,14 @@ const User = require("../db/user-model");
 const { Animal } = require("../db");
 const resizeAvatar = require("../helpers/resize-avatar");
 
-const addAnimal = async (filds, owner) => {
+const addAnimal = async (fields, owner) => {
   try {
-    const result = await Animal.create({ ...filds, owner });
+    const result = await Animal.create({ ...fields });
+    await User.findByIdAndUpdate(
+      { _id: owner },
+      { $addToSet: { myAnimal: result._id } }
+    );
+    console.log(result._id);
     return result;
   } catch (error) {
     return error;
@@ -26,8 +31,9 @@ const addAnimal = async (filds, owner) => {
 // =================================================
 const listAnimal = async (_id) => {
   try {
-    const result = await User.find({ _id }).populate("animal");
-
+    const result = await User.find({ _id }).populate({
+      path: "myAnimal",
+    });
     return result;
   } catch (error) {
     return error;
