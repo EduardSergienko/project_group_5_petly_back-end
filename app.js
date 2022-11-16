@@ -5,7 +5,7 @@ require("dotenv").config();
 const { errorHandler } = require("./helpers/api-helpers");
 const noticesRouter = require("./routes/api/notices.js");
 const authRouter = require("./routes/api/auth");
-const animalRouter = require("./routes/api/animals");
+// const animalRouter = require("./routes/api/animals");
 const userRouter = require("./routes/api/user");
 const newsRouter = require("./routes/api/news");
 const friendsRouter = require("./routes/api/friends");
@@ -22,7 +22,7 @@ app.use(express.static("public"));
 app.use("/api/notices", noticesRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/news", newsRouter);
-app.use("/api/animals", animalRouter);
+// app.use("/api/animals", animalRouter);
 app.use("/api/user", userRouter);
 app.use("/api/friends", friendsRouter);
 
