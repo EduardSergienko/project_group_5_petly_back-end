@@ -59,6 +59,7 @@ const addAnimalJoiSchema = Joi.object({
     .required(),
   breed: Joi.string().required(),
   comments: Joi.string().required(),
+  petImageUrl: Joi.any().required(),
 });
 
 module.exports = {

@@ -13,6 +13,7 @@ const updateUserMiddleware = require("../../middlewares/update-user-middleware")
 const {
   uploadAvatarMiddleware,
 } = require("../../middlewares/upload-avatar-middleware");
+const validateFormData = require("../../middlewares/validate-formdata-middleware");
 
 const router = express.Router();
 
@@ -25,12 +26,13 @@ router.get(
 router.post(
   "/animal",
   authenticate,
-  validateBody(addAnimalJoiSchema),
+  uploadAvatarMiddleware.single("avatar"),
+  validateFormData(addAnimalJoiSchema),
   asyncWrapper(ctrl.addAnimalController)
 );
 
 router.patch(
-  "/avatars",
+  "/:id",
   authenticate,
   isValidIdMiddleware,
   uploadAvatarMiddleware.single("avatar"),

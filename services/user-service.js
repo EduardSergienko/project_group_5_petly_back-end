@@ -1,24 +1,20 @@
-// const path = require("path");
-// const fs = require("fs/promises");
-const gravatar = require("gravatar");
+const path = require("path");
+const fs = require("fs/promises");
 
 const User = require("../db/user-model");
 const { Animal } = require("../db/animal-model");
-// const resizeAvatar = require("../helpers/resize-avatar");
+const resizeAvatar = require("../helpers/resize-avatar");
 
 const addAnimal = async (fields, owner) => {
   try {
-    // const { name, birthDay, breed, comments } = req.body;
-    // const newAvatarPath = path.resolve(
-    //   `./user/animal/avatar-${new Date().getTime().toString()}.png`
-    // );
-    // await resizeAvatar(fields.petImageUrl);
-    // await fs.rename(fields.petImageUrl, newAvatarPath);
-    // await fs.rename("./tmp/avatar.jpg", ".public/animal/avatar.jpg");
+    const newAvatarPath = path.resolve(
+      `./public/avatars/avatar-${new Date().getTime().toString()}.png`
+    );
+    await resizeAvatar(fields.avatarURL);
+    await fs.rename(fields.avatarURL, newAvatarPath);
 
-    // fields.petImageUrl = newAvatarPath;
-    const avatarURL = gravatar.url({ _id: owner });
-    const result = await Animal.create({ ...fields, avatarURL });
+    fields.avatarURL = newAvatarPath;
+    const result = await Animal.create({ ...fields });
     await User.findByIdAndUpdate(
       { _id: owner },
       { $addToSet: { myAnimal: result._id } }
@@ -62,17 +58,16 @@ const updateUser = async (_id, fields) => {
     return error.message;
   }
 };
-// const avatarAnimalDir = path.join(__dirname, "../", "public", "animal-avatars");
 
 const updateAvatar = async (_id, user) => {
   try {
-    // const newAvatarPath = path.resolve(`./public/avatars/${_id}avatar.png`);
-    // await resizeAvatar(user.pathAvatar);
-    // await fs.rename(user.pathAvatar, newAvatarPath);
-    // const avatarURL = newAvatarPath;
-    // return avatarURL;
+    const newAvatarPath = path.resolve(`./public/avatars/${_id}avatar.png`);
+    await resizeAvatar(user.pathAvatar);
+    await fs.rename(user.pathAvatar, newAvatarPath);
+    const avatarURL = newAvatarPath;
+    return avatarURL;
   } catch (error) {
-    // await fs.unlink(animal.pathAvatar);
+    await fs.unlink(user.pathAvatar);
     return error.message;
   }
 };
