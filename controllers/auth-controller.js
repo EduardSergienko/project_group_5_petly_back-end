@@ -18,15 +18,14 @@ const registerСontroller = async (req, res) => {
 const loginСontroller = async (req, res) => {
   const { email: userEmail, password } = req.body;
 
-  const { token, email } = await login(userEmail, password);
+  const result = await login(userEmail, password);
 
-  if (!token) {
+  if (!result.token) {
     throw new ApiErrorsTemplate(401, "Email or password is wrong");
   }
 
   res.status(201).json({
-    token,
-    email,
+    result,
   });
 };
 
