@@ -1,14 +1,14 @@
 const path = require("path");
 const fs = require("fs/promises");
-
 const User = require("../db/user-model");
 const { Animal } = require("../db/animal-model");
 const resizeAvatar = require("../helpers/resize-avatar");
+const avatarsDir = path.join(__dirname, "public", "avatars");
 
 const addAnimal = async (fields, owner) => {
   try {
     const newAvatarPath = path.resolve(
-      `./public/avatars/avatar-${new Date().getTime().toString()}.png`
+      `${avatarsDir}/avatar-${new Date().getTime().toString()}.png`
     );
     await resizeAvatar(fields.avatarURL);
     await fs.rename(fields.avatarURL, newAvatarPath);
@@ -61,7 +61,7 @@ const updateUser = async (_id, fields) => {
 
 const updateAvatar = async (_id, user) => {
   try {
-    const newAvatarPath = path.resolve(`./public/avatars/${_id}avatar.png`);
+    const newAvatarPath = path.resolve(`${avatarsDir}/${_id}avatar.png`);
     await resizeAvatar(user.pathAvatar);
     await fs.rename(user.pathAvatar, newAvatarPath);
     const avatarURL = newAvatarPath;
