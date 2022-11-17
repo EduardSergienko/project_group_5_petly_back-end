@@ -3,6 +3,7 @@ const User = require("../db/user-model");
 const path = require("path");
 const fs = require("fs").promises;
 const resizeAvatar = require("../helpers/resize-avatar");
+const avatarsDir = path.join(__dirname, "public", "avatars");
 
 const getByCategory = async (category, skip, limit) => {
   try {
@@ -73,7 +74,7 @@ const removeFromFavorite = async (_id, noticeId) => {
 const createNotice = async (notice) => {
   try {
     const newAvatarPath = path.resolve(
-      `./public/avatars/avatar-${new Date().getTime().toString()}.png`
+      `${avatarsDir}/avatar-${new Date().getTime().toString()}.png`
     );
 
     await resizeAvatar(notice.petImageUrl);
