@@ -73,14 +73,13 @@ const removeFromFavorite = async (_id, noticeId) => {
 
 const createNotice = async (notice) => {
   try {
-    const newAvatarPath = path.resolve(
-      `${avatarsDir}/avatar-${new Date().getTime().toString()}.png`
-    );
+    const avatarName = `avatar-${new Date().getTime().toString()}.png`;
+    const newAvatarPath = path.resolve(`${avatarsDir}/${avatarName}`);
 
     await resizeAvatar(notice.petImageUrl);
     await fs.rename(notice.petImageUrl, newAvatarPath);
 
-    notice.petImageUrl = newAvatarPath;
+    notice.petImageUrl = path.join("avatars", avatarName);
     const data = await Notice.create({ ...notice });
 
     return data;

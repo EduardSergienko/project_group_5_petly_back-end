@@ -7,13 +7,12 @@ const avatarsDir = path.join(__dirname, "..", "public", "avatars");
 
 const addAnimal = async (fields, owner) => {
   try {
-    const newAvatarPath = path.resolve(
-      `${avatarsDir}/avatar-${new Date().getTime().toString()}.png`
-    );
+    const avatarName = `avatar-${new Date().getTime().toString()}.png`;
+    const newAvatarPath = path.resolve(`${avatarsDir}/${avatarName}`);
     await resizeAvatar(fields.avatarURL);
     await fs.rename(fields.avatarURL, newAvatarPath);
 
-    fields.avatarURL = newAvatarPath;
+    fields.avatarURL = path.join("avatars", avatarName);
     const result = await Animal.create({ ...fields });
     await User.findByIdAndUpdate(
       { _id: owner },
@@ -61,10 +60,11 @@ const updateUser = async (_id, fields) => {
 
 const updateAvatar = async (_id, user) => {
   try {
-    const newAvatarPath = path.resolve(`${avatarsDir}/${_id}avatar.png`);
+    const avatarName = `${_id}avatar.png`;
+    const newAvatarPath = path.resolve(`${avatarsDir}/${avatarName}`);
     await resizeAvatar(user.pathAvatar);
     await fs.rename(user.pathAvatar, newAvatarPath);
-    const avatarURL = newAvatarPath;
+    const avatarURL = path.join("avatars", avatarName);
     return avatarURL;
   } catch (error) {
     await fs.unlink(user.pathAvatar);
