@@ -25,7 +25,6 @@ const userSchema = new Schema(
     phone: {
       type: String,
       required: [true, "phone"],
-      // unique: true,
     },
     token: {
       type: String,
@@ -40,26 +39,13 @@ const userSchema = new Schema(
       default: "00.00.0000",
       formData: regBirthDay,
     },
-    // myPets: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "animal",
-    // },
     myFavorite: [{ type: Schema.Types.ObjectId, ref: "notice" }],
     myAnimal: [{ type: Schema.Types.ObjectId, ref: "animal" }],
-    // animal: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "animal",
-    // },
   },
 
   { versionKey: false, timestamps: true }
 );
 
-// const handleSaveErrors = (error, data, next) => {
-//   const { name, code } = error;
-//   error.status = name === "MongoServerError" && code === 11000 ? 409 : 400;
-//   next();
-// };
 userSchema.post("save", handleSaveErrors);
 const User = model("user", userSchema);
 

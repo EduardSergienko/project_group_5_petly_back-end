@@ -1,6 +1,5 @@
 const fs = require("fs/promises");
 const path = require("path");
-
 const User = require("../db/user-model");
 const { Animal } = require("../db/animal-model");
 const resizeAvatar = require("../helpers/resize-avatar");

@@ -34,9 +34,11 @@ const updateUserSchema = Joi.object({
 const noticeSchema = Joi.object({
   title: Joi.string().min(2).max(48).required(),
   petName: Joi.string().min(2).max(16).required(),
-  birthDate: Joi.string().pattern(
-    /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/
-  ),
+  birthDate: Joi.string()
+    .pattern(
+      /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/
+    )
+    .required(),
   breed: Joi.string().min(2).max(24).required(),
   sex: Joi.string().valid("male", "female").required(),
   location: Joi.string().required(),
@@ -46,9 +48,21 @@ const noticeSchema = Joi.object({
   category: Joi.string().valid("sell", "lost-found", "for-free").required(),
 });
 
+const addAnimalJoiSchema = Joi.object({
+  name: Joi.string().required(),
+  birthDay: Joi.string()
+    .pattern(
+      /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/
+    )
+    .required(),
+  breed: Joi.string().required(),
+  comments: Joi.string().required(),
+});
+
 module.exports = {
   registerSchema,
   loginSchema,
   noticeSchema,
   updateUserSchema,
+  addAnimalJoiSchema,
 };
