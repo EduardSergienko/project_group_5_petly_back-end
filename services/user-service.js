@@ -1,5 +1,6 @@
-const fs = require("fs/promises");
 const path = require("path");
+const fs = require("fs/promises");
+
 const User = require("../db/user-model");
 const { Animal } = require("../db/animal-model");
 const resizeAvatar = require("../helpers/resize-avatar");
@@ -7,13 +8,12 @@ const resizeAvatar = require("../helpers/resize-avatar");
 const addAnimal = async (fields, owner) => {
   try {
     const newAvatarPath = path.resolve(
-      `./user/animal/avatar-${new Date().getTime().toString()}.png`
+      `./public/avatars/avatar-${new Date().getTime().toString()}.png`
     );
-    await resizeAvatar(fields.petImageUrl);
-    await fs.rename(fields.petImageUrl, newAvatarPath);
+    await resizeAvatar(fields.avatarURL);
+    await fs.rename(fields.avatarURL, newAvatarPath);
 
-    fields.petImageUrl = newAvatarPath;
-
+    fields.avatarURL = newAvatarPath;
     const result = await Animal.create({ ...fields });
     await User.findByIdAndUpdate(
       { _id: owner },

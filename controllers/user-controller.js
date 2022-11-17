@@ -5,7 +5,16 @@ const userService = require("../services/user-service");
 
 const addAnimalController = async (req, res) => {
   const { id: owner } = req.user;
-  const result = await userService.addAnimal(req.body, owner);
+
+  const animal = {
+    name: req.body.name,
+    birthDay: req.body.birthDa,
+    breed: req.body.breed,
+    comments: req.body.comments,
+    avatarURL: req.body.petImageUrl,
+    owner,
+  };
+  const result = await userService.addAnimal(animal, owner);
 
   if (result === "Unsupported MIME type") {
     throw new ApiErrorsTemplate(400, "Unsupported MIME type");
@@ -57,20 +66,9 @@ const updateDataUserСontroller = async (req, res) => {
   res.status(201).json({ data });
 };
 
-const updateAvatarСontroller = async (req, res) => {
-  const { id } = req.user;
-  const user = {
-    pathAvatar: req.file.path,
-  };
-
-  const data = await userService.updateAvatar(id, user);
-  res.status(201).json({ data });
-};
-
 module.exports = {
   addAnimalController,
   removeAnimalController,
   getCurrentUserController,
-  updateAvatarСontroller,
   updateDataUserСontroller,
 };

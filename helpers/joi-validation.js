@@ -1,4 +1,5 @@
 const Joi = require("joi");
+
 const registerSchema = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
@@ -18,6 +19,7 @@ const loginSchema = Joi.object({
     .required(),
   password: Joi.string().min(7).max(32).required(),
 });
+
 const updateUserSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string().email({ tlds: { allow: false } }),
@@ -57,6 +59,7 @@ const addAnimalJoiSchema = Joi.object({
     .required(),
   breed: Joi.string().required(),
   comments: Joi.string().required(),
+  petImageUrl: Joi.any().required(),
 });
 
 module.exports = {
