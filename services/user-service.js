@@ -3,7 +3,7 @@ const fs = require("fs/promises");
 const User = require("../db/user-model");
 const { Animal } = require("../db/animal-model");
 const resizeAvatar = require("../helpers/resize-avatar");
-const avatarsDir = path.join(__dirname, "public", "avatars");
+const avatarsDir = path.join(__dirname, "..", "public", "avatars");
 
 const addAnimal = async (fields, owner) => {
   try {

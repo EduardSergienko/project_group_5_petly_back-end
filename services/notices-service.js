@@ -3,7 +3,7 @@ const User = require("../db/user-model");
 const path = require("path");
 const fs = require("fs").promises;
 const resizeAvatar = require("../helpers/resize-avatar");
-const avatarsDir = path.join(__dirname, "public", "avatars");
+const avatarsDir = path.join(__dirname, "..", "public", "avatars");
 
 const getByCategory = async (category, skip, limit) => {
   try {
