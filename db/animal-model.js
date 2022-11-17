@@ -1,6 +1,4 @@
-// const { Schema, model } = require("mongoose");
 const mongoose = require("mongoose");
-const Joi = require("joi");
 const handleSaveErrors = require("../helpers/handle-save-errors");
 
 const regBirthDay =
@@ -27,7 +25,7 @@ const AnimalSchema = new mongoose.Schema(
     },
     avatarURL: {
       type: String,
-      // required: true,
+      required: true,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
@@ -40,16 +38,8 @@ const AnimalSchema = new mongoose.Schema(
 
 AnimalSchema.post("save", handleSaveErrors);
 
-const addAnimalJoiSchema = Joi.object({
-  name: Joi.string().required(),
-  birthDay: Joi.string().pattern(regBirthDay).required(),
-  breed: Joi.string().required(),
-  comments: Joi.string().required(),
-});
-
 const Animal = mongoose.model("animal", AnimalSchema);
 
 module.exports = {
   Animal,
-  addAnimalJoiSchema,
 };

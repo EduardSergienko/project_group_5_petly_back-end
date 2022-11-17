@@ -3,8 +3,10 @@ const express = require("express");
 const { authenticate } = require("../../middlewares/auth-middleware");
 const { asyncWrapper } = require("../../helpers/api-helpers");
 const ctrl = require("../../controllers/user-controller");
-const { updateUserSchema } = require("../../helpers/joi-validation");
-const { addAnimalJoiSchema } = require("../../db/animal-model");
+const {
+  updateUserSchema,
+  addAnimalJoiSchema,
+} = require("../../helpers/joi-validation");
 const validateBody = require("../../middlewares/validate-body");
 const isValidIdMiddleware = require("../../middlewares/is-valid-id-middleware");
 const updateUserMiddleware = require("../../middlewares/update-user-middleware");

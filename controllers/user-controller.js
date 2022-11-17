@@ -24,7 +24,7 @@ const removeAnimalController = async (req, res) => {
     message: "Animal remove",
   });
 };
-// ====================================================
+
 const getCurrentUserController = async (req, res) => {
   const { id } = req.user;
   const result = await userService.getCurrentUser(id);
