@@ -22,7 +22,7 @@ const addAnimal = async (fields, owner) => {
 
     return result;
   } catch (error) {
-    return error;
+    return error.message;
   }
 };
 
