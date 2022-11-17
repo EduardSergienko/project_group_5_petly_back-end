@@ -23,14 +23,14 @@ router.get(
 );
 
 router.post(
-  "/animal/",
+  "/animal",
   authenticate,
   validateBody(addAnimalJoiSchema),
   asyncWrapper(ctrl.addAnimalController)
 );
 
 router.patch(
-  "/:id",
+  "/avatars",
   authenticate,
   isValidIdMiddleware,
   uploadAvatarMiddleware.single("avatar"),

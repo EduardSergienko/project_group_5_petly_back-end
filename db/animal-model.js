@@ -25,7 +25,7 @@ const AnimalSchema = new mongoose.Schema(
     },
     avatarURL: {
       type: String,
-      required: true,
+      // required: true,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,

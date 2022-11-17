@@ -1,15 +1,17 @@
 const fs = require("fs/promises");
-
+const path = require("path");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 const userService = require("../services/user-service");
+const { Animal } = require("../db/animal-model");
 
 const addAnimalController = async (req, res) => {
   const { id: owner } = req.user;
   const result = await userService.addAnimal(req.body, owner);
-
-  if (result === "Unsupported MIME type") {
-    throw new ApiErrorsTemplate(400, "Unsupported MIME type");
-  }
+  // console.log(req.body);
+  // console.log(req.file);
+  // if (result === "Unsupported MIME type") {
+  //   throw new ApiErrorsTemplate(400, "Unsupported MIME type");
+  // }
 
   res.status(201).json(result);
 };
@@ -57,11 +59,28 @@ const updateDataUserСontroller = async (req, res) => {
   res.status(201).json({ data });
 };
 
+const avatarAnimalDir = path.join(__dirname, "../", "public", "animal-avatars");
+
 const updateAvatarСontroller = async (req, res) => {
-  const { id } = req.user;
-  const user = {
-    pathAvatar: req.file.path,
-  };
+  try {
+    const { _id } = req.user;
+    const { path: tempUpload, originalname } = req.file;
+    const extention = originalname.split(".").pop();
+    const filename = `${_id}.${extention}`;
+    const resultUpload = path.join(avatarAnimalDir, filename);
+    await fs.rename(tempUpload, resultUpload);
+    const avatarURL = path.join("avatars", filename);
+    await Animal.findByIdAndUpdate(_id, { avatarURL });
+    res.json({
+      avatarURL,
+    });
+  } catch (error) {
+    await fs.unlink(req.file.path);
+  }
+  // const { id } = req.user;
+  // const user = {
+  //   pathAvatar: req.file.path,
+  // };
 
   const data = await userService.updateAvatar(id, user);
   res.status(201).json({ data });
