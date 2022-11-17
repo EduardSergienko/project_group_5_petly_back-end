@@ -32,18 +32,20 @@ const CreateUser = async (email, password, name, location, phone) => {
 
 const login = async (email, password) => {
   try {
-    const [user] = await User.find({ email }, { __v: 0, token: 0 });
+    const [result] = await User.find({ email }).populate({
+      path: "myAnimal",
+    });
 
-    if (!(await bcrypt.compare(password, user.password))) {
+    if (!(await bcrypt.compare(password, result.password))) {
       throw new Error();
     }
 
-    const token = createToken(user._id);
+    const token = createToken(result._id);
 
-    user.token = token;
-    await user.save();
+    result.token = token;
+    await result.save();
 
-    return user;
+    return result;
   } catch (error) {
     return error.message;
   }
