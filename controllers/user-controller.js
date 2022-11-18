@@ -8,7 +8,7 @@ const addAnimalController = async (req, res) => {
 
   const animal = {
     name: req.body.name,
-    birthDay: req.body.birthDa,
+    birthDay: req.body.birthDay,
     breed: req.body.breed,
     comments: req.body.comments,
     avatarURL: req.body.petImageUrl,
