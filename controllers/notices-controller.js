@@ -1,6 +1,21 @@
 const notices = require("../services/notices-service");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
+// =======================================================
+const getSearchNoticeController = async (req, res) => {
+  // const { notice: title } = req.body;
+  const result = await notices.getSearchNotice();
+  console.log(result);
+  if (!result.length) {
+    throw new ApiErrorsTemplate(404, "Not found");
+  }
+
+  res.status(200).json({
+    result,
+  });
+};
+// =======================================================
+
 const getNoticesByCategoryController = async (req, res) => {
   const { categoryName: category } = req.params;
   let { page = 1, limit = 8 } = req.query;
@@ -148,4 +163,5 @@ module.exports = {
   addNoticeController,
   getUserNoticesController,
   removeUserNoticesController,
+  getSearchNoticeController,
 };
