@@ -7,7 +7,17 @@ const avatarsDir = path.join(__dirname, "..", "public", "avatars");
 
 const getByCategory = async (category, skip, limit) => {
   try {
-    const data = await Notice.find({ category })
+    const data = await Notice.find(
+      { category },
+      {
+        title: 1,
+        category: 1,
+        breed: 1,
+        location: 1,
+        petImageUrl: 1,
+        birthDate: 1,
+      }
+    )
       .select({ __v: 0 })
       .skip(skip)
       .limit(limit);
@@ -31,6 +41,14 @@ const getFavorite = async (_id) => {
     const [data] = await User.find({ _id }, { myFavorite: 1 }).populate({
       path: "myFavorite",
       fields: { myFavorite: 1 },
+      select: {
+        title: 1,
+        category: 1,
+        breed: 1,
+        location: 1,
+        petImageUrl: 1,
+        birthDate: 1,
+      },
     });
 
     return data;
@@ -91,7 +109,17 @@ const createNotice = async (notice) => {
 
 const getUserNotices = async (_id) => {
   try {
-    const data = await Notice.find({ owner: _id });
+    const data = await Notice.find(
+      { owner: _id },
+      {
+        title: 1,
+        category: 1,
+        breed: 1,
+        location: 1,
+        petImageUrl: 1,
+        birthDate: 1,
+      }
+    );
     return data;
   } catch (error) {
     return error;
