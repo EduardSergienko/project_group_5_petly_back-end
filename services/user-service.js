@@ -27,7 +27,10 @@ const addAnimal = async (fields, owner) => {
 
 const getCurrentUser = async (_id) => {
   try {
-    const result = await User.find({ _id }).populate({
+    const result = await User.find(
+      { _id },
+      { createdAt: 0, updatedAt: 0, password: 0 }
+    ).populate({
       path: "myAnimal",
     });
     return result;
@@ -50,7 +53,17 @@ const updateUser = async (_id, fields) => {
     const responce = await User.findByIdAndUpdate(
       { _id },
       { ...fields },
-      { new: true }
+      {
+        new: true,
+        select: {
+          myFavorite: 0,
+          myAnimal: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          password: 0,
+          token: 0,
+        },
+      }
     );
     return responce;
   } catch (error) {

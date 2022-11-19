@@ -65,7 +65,7 @@ const noticeScheme = new mongoose.Schema(
       ref: "user",
     },
   },
-  { timestamps: true }
+  { versionKey: false, timestamps: true }
 );
 
 noticeScheme.post("save", handleSaveErrors);

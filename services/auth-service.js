@@ -11,14 +11,17 @@ const CreateUser = async (email, password, name, location, phone) => {
       { protocol: "https", s: "240" },
       true
     );
-    const user = new User({
-      email,
-      password: hashPassword,
-      name,
-      location,
-      phone,
-      avatarURL,
-    });
+    const user = new User(
+      {
+        email,
+        password: hashPassword,
+        name,
+        location,
+        phone,
+        avatarURL,
+      },
+      { myFavorite: 0, myAnimal: 0, createdAt: 0 }
+    );
 
     const token = createToken(user._id);
     user.token = token;
@@ -32,7 +35,7 @@ const CreateUser = async (email, password, name, location, phone) => {
 
 const login = async (email, password) => {
   try {
-    const [result] = await User.find({ email }).populate({
+    const [result] = await User.find({ email }, { createdAt: 0 }).populate({
       path: "myAnimal",
     });
 
