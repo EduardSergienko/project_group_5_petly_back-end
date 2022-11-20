@@ -2,10 +2,11 @@ const notices = require("../services/notices-service");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
 const getSearchNoticeController = async (req, res) => {
-  const { title: noticeTitle } = req.params;
-  const result = await notices.getSearchNotice(noticeTitle.toLowerCase());
-  console.log(result);
-  // const result = await Notice.find({ title: noticeTitle });
+  const { noticeTitle: title } = req.params;
+  // const { category: filter } = req.params;
+  console.log(req.params);
+  const result = await notices.getSearchNotice(title);
+
   if (result.length === 0) {
     throw new ApiErrorsTemplate(404, "Not found");
   }
