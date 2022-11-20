@@ -41,8 +41,12 @@ const noticeScheme = new mongoose.Schema(
     },
     price: {
       type: Number,
-      min: 1,
-      required: [true, "Price is required"],
+      required: [
+        function () {
+          return this.category === "sell";
+        },
+        "Price is required",
+      ],
     },
     petImageUrl: {
       type: String,
