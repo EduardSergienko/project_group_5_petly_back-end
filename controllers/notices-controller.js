@@ -3,16 +3,14 @@ const { ApiErrorsTemplate } = require("../helpers/errors");
 
 // =======================================================
 const getSearchNoticeController = async (req, res) => {
-  // const { notice: title } = req.body;
-  const result = await notices.getSearchNotice();
+  const { title: noticeTitle } = req.params;
+  const result = await notices.getSearchNotice(noticeTitle.toLowerCase());
   console.log(result);
-  if (!result.length) {
+  // const result = await Notice.find({ title: noticeTitle });
+  if (result.length === 0) {
     throw new ApiErrorsTemplate(404, "Not found");
   }
-
-  res.status(200).json({
-    result,
-  });
+  res.json(result);
 };
 // =======================================================
 

@@ -3,14 +3,26 @@ const User = require("../db/user-model");
 const path = require("path");
 const fs = require("fs").promises;
 const resizeAvatar = require("../helpers/resize-avatar");
-// const { title } = require("process");
 const avatarsDir = path.join(__dirname, "..", "public", "avatars");
 
 // =======================================================
-const getSearchNotice = async (title) => {
+const getSearchNotice = async (noticeTitle) => {
+  // try {
+  //   const data = await Notice.find(
+  //     { title: noticeTitle },
+  //     {
+  //       title: 1,
+  //       category: 1,
+  //       breed: 1,
+  //     }
+  //   );
+  //   return data;
+  // } catch (error) {
+  //   return error;
+  // }
   try {
     const result = Notice.find(
-      { title: { $regex: /^red/i } },
+      { title: { $regex: noticeTitle, $options: "i" } },
       {
         title: 1,
         category: 1,
