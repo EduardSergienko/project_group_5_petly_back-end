@@ -36,6 +36,7 @@ const getByCategory = async (category, skip, limit) => {
         location: 1,
         petImageUrl: 1,
         birthDate: 1,
+        price: 1,
       }
     )
       .select({ __v: 0 })
@@ -68,6 +69,7 @@ const getFavorite = async (_id) => {
         location: 1,
         petImageUrl: 1,
         birthDate: 1,
+        price: 1,
       },
     });
 
@@ -138,6 +140,7 @@ const getUserNotices = async (_id) => {
         location: 1,
         petImageUrl: 1,
         birthDate: 1,
+        price: 1,
       }
     );
     return data;
