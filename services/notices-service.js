@@ -24,9 +24,9 @@ const getSearchNotice = async (noticeTitle) => {
     const result = Notice.find(
       { title: { $regex: noticeTitle, $options: "i" } },
       {
-        title: 1,
-        category: 1,
-        breed: 1,
+        petImageUrl: 1,
+        birthDate: 1,
+        location: 1,
       }
     );
     return result;
