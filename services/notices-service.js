@@ -44,9 +44,12 @@ const getByCategory = async (category, skip, limit) => {
 
 const getById = async (id) => {
   try {
-    const data = await Notice.find({ _id: id }).populate({
+    const data = await Notice.find(
+      { _id: id },
+      { createdAt: 0, updatedAt: 0 }
+    ).populate({
       path: "owner",
-      select: { email: 1, _id: 0 },
+      select: { email: 1, phone: 1, _id: 0 },
     });
     return data;
   } catch (error) {
