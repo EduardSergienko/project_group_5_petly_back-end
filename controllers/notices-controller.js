@@ -1,7 +1,6 @@
 const notices = require("../services/notices-service");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
-// =======================================================
 const getSearchNoticeController = async (req, res) => {
   const { title: noticeTitle } = req.params;
   const result = await notices.getSearchNotice(noticeTitle.toLowerCase());
@@ -12,7 +11,6 @@ const getSearchNoticeController = async (req, res) => {
   }
   res.json(result);
 };
-// =======================================================
 
 const getNoticesByCategoryController = async (req, res) => {
   const { categoryName: category } = req.params;
