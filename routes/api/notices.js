@@ -9,7 +9,10 @@ const {
 } = require("../../middlewares/upload-avatar-middleware");
 const router = express.Router();
 
-router.get("/:title", asyncWrapper(noticeCtrl.getSearchNoticeController));
+router.get(
+  "/api/notices/:category/notices?filter='title::query'",
+  asyncWrapper(noticeCtrl.getSearchNoticeController)
+);
 
 router.get(
   "/category/:categoryName",
