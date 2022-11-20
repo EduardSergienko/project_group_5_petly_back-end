@@ -27,7 +27,7 @@ const CreateUser = async (email, password, name, location, phone) => {
     user.token = token;
     await user.save();
 
-    return user;
+    return user._doc;
   } catch (error) {
     return error;
   }
@@ -48,7 +48,7 @@ const login = async (email, password) => {
     result.token = token;
     await result.save();
 
-    return result;
+    return result._doc;
   } catch (error) {
     return error.message;
   }

@@ -44,10 +44,14 @@ const noticeSchema = Joi.object({
   breed: Joi.string().min(2).max(24).required(),
   sex: Joi.string().valid("male", "female").required(),
   location: Joi.string().required(),
-  price: Joi.number().min(1).required(),
   petImageUrl: Joi.any().required(),
   comments: Joi.string().min(8).max(120).required(),
   category: Joi.string().valid("sell", "lost-found", "for-free").required(),
+  price: Joi.number().min(1).when("category", {
+    is: "sell",
+    then: Joi.required(),
+    otherwise: Joi.optional(),
+  }),
 });
 
 const addAnimalJoiSchema = Joi.object({
