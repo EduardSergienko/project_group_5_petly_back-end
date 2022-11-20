@@ -44,7 +44,10 @@ const getByCategory = async (category, skip, limit) => {
 
 const getById = async (id) => {
   try {
-    const data = await Notice.find({ _id: id });
+    const data = await Notice.find({ _id: id }).populate({
+      path: "owner",
+      select: { email: 1, _id: 0 },
+    });
     return data;
   } catch (error) {
     return error;
