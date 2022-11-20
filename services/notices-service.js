@@ -5,28 +5,18 @@ const fs = require("fs").promises;
 const resizeAvatar = require("../helpers/resize-avatar");
 const avatarsDir = path.join(__dirname, "..", "public", "avatars");
 
-// =======================================================
 const getSearchNotice = async (noticeTitle) => {
-  // try {
-  //   const data = await Notice.find(
-  //     { title: noticeTitle },
-  //     {
-  //       title: 1,
-  //       category: 1,
-  //       breed: 1,
-  //     }
-  //   );
-  //   return data;
-  // } catch (error) {
-  //   return error;
-  // }
   try {
     const result = Notice.find(
       { title: { $regex: noticeTitle, $options: "i" } },
       {
+        title: 1,
+        category: 1,
+        breed: 1,
+        location: 1,
         petImageUrl: 1,
         birthDate: 1,
-        location: 1,
+        price: 1,
       }
     );
     return result;
@@ -34,7 +24,7 @@ const getSearchNotice = async (noticeTitle) => {
     return error;
   }
 };
-// =======================================================
+
 const getByCategory = async (category, skip, limit) => {
   try {
     const data = await Notice.find(
