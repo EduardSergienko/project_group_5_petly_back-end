@@ -5,20 +5,31 @@ const fs = require("fs").promises;
 const resizeAvatar = require("../helpers/resize-avatar");
 const avatarsDir = path.join(__dirname, "..", "public", "avatars");
 
+const modelNotice = {
+  title: 1,
+  category: 1,
+  breed: 1,
+  location: 1,
+  petImageUrl: 1,
+  birthDate: 1,
+  price: 1,
+};
+
+const getSearchNotice = async (noticeTitle) => {
+  try {
+    const result = Notice.find(
+      { title: { $regex: noticeTitle, $options: "i" } },
+      modelNotice
+    );
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getByCategory = async (category, skip, limit) => {
   try {
-    const data = await Notice.find(
-      { category },
-      {
-        title: 1,
-        category: 1,
-        breed: 1,
-        location: 1,
-        petImageUrl: 1,
-        birthDate: 1,
-        price: 1,
-      }
-    )
+    const data = await Notice.find({ category }, modelNotice)
       .select({ __v: 0 })
       .skip(skip)
       .limit(limit);
@@ -42,15 +53,7 @@ const getFavorite = async (_id) => {
     const [data] = await User.find({ _id }, { myFavorite: 1 }).populate({
       path: "myFavorite",
       fields: { myFavorite: 1 },
-      select: {
-        title: 1,
-        category: 1,
-        breed: 1,
-        location: 1,
-        petImageUrl: 1,
-        birthDate: 1,
-        price: 1,
-      },
+      select: modelNotice,
     });
 
     return data;
@@ -111,18 +114,7 @@ const createNotice = async (notice) => {
 
 const getUserNotices = async (_id) => {
   try {
-    const data = await Notice.find(
-      { owner: _id },
-      {
-        title: 1,
-        category: 1,
-        breed: 1,
-        location: 1,
-        petImageUrl: 1,
-        birthDate: 1,
-        price: 1,
-      }
-    );
+    const data = await Notice.find({ owner: _id }, modelNotice);
     return data;
   } catch (error) {
     return error;
@@ -147,4 +139,5 @@ module.exports = {
   createNotice,
   getUserNotices,
   removeUserNotice,
+  getSearchNotice,
 };
