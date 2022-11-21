@@ -10,7 +10,7 @@ const {
 const router = express.Router();
 
 router.get(
-  "/::noticeTitle",
+  "/:category/:noticeTitle",
   asyncWrapper(noticeCtrl.getSearchNoticeController)
 );
 

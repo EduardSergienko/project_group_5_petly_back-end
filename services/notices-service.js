@@ -15,11 +15,12 @@ const modelNotice = {
   price: 1,
 };
 
-const getSearchNotice = async (noticeTitle) => {
+const getSearchNotice = async (noticeTitle, category) => {
   try {
     const result = Notice.find(
       {
         title: { $regex: noticeTitle, $options: "i" },
+        category: category,
       },
       modelNotice
     );
