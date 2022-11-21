@@ -10,7 +10,7 @@ const {
 const router = express.Router();
 
 router.get(
-  "/api/notices/:category/notices?filter='title::query'",
+  "/:category/:noticeTitle",
   asyncWrapper(noticeCtrl.getSearchNoticeController)
 );
 
@@ -19,21 +19,25 @@ router.get(
   asyncWrapper(noticeCtrl.getNoticesByCategoryController)
 );
 router.get("/:noticeId", asyncWrapper(noticeCtrl.getNoticeByIdController));
+
 router.patch(
   "/:noticeId/favorite",
   authenticate,
   asyncWrapper(noticeCtrl.addNoticeToFavoriteController)
 );
+
 router.get(
   "/user/favorite",
   authenticate,
   asyncWrapper(noticeCtrl.getFavoriteNoticesController)
 );
+
 router.delete(
   "/:noticeId/favorite",
   authenticate,
   asyncWrapper(noticeCtrl.removeFromFavoriteNoticeController)
 );
+
 router.post(
   "/",
   authenticate,
@@ -41,11 +45,13 @@ router.post(
   validateFormData(noticeSchema),
   asyncWrapper(noticeCtrl.addNoticeController)
 );
+
 router.get(
   "/user/own",
   authenticate,
   asyncWrapper(noticeCtrl.getUserNoticesController)
 );
+
 router.delete(
   "/:noticeId",
   authenticate,
