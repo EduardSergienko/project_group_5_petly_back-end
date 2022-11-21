@@ -3,8 +3,7 @@ const { ApiErrorsTemplate } = require("../helpers/errors");
 
 const getSearchNoticeController = async (req, res) => {
   const { noticeTitle: title } = req.params;
-  // const { category: filter } = req.params;
-  console.log(req.params);
+
   const result = await notices.getSearchNotice(title);
 
   if (result.length === 0) {
