@@ -34,6 +34,7 @@ const getByCategory = async (category, skip, limit) => {
   try {
     const data = await Notice.find({ category }, modelNotice)
       .select({ __v: 0 })
+      .sort({ createdAt: "desc" })
       .skip(skip)
       .limit(limit);
     return data;
@@ -123,7 +124,9 @@ const createNotice = async (notice) => {
 
 const getUserNotices = async (_id) => {
   try {
-    const data = await Notice.find({ owner: _id }, modelNotice);
+    const data = await Notice.find({ owner: _id }, modelNotice).sort({
+      createdAt: "desc",
+    });
     return data;
   } catch (error) {
     return error;
