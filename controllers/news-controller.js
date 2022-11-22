@@ -2,7 +2,16 @@ const getNews = require("../services/news-service");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
 const getNewsController = async (req, res) => {
-  const data = await getNews();
+  let { page = 1, limit = 9 } = req.query;
+
+  if (page <= 0) {
+    throw new ApiErrorsTemplate(400, "Page must be greater then 0");
+  }
+
+  limit = parseInt(limit) > 9 ? 9 : parseInt(limit);
+  const skip = (parseInt(page) - 1) * parseInt(limit);
+
+  const data = await getNews(skip, limit);
 
   if (!data.length) {
     throw new ApiErrorsTemplate(404, "Not found");
