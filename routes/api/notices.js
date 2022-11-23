@@ -9,10 +9,10 @@ const {
 } = require("../../middlewares/upload-avatar-middleware");
 const router = express.Router();
 
-router.get(
-  "/:category/:noticeTitle",
-  asyncWrapper(noticeCtrl.getSearchNoticeController)
-);
+// router.get(
+//   "/:category/:noticeTitle",
+//   asyncWrapper(noticeCtrl.getSearchNoticeController)
+// );
 
 router.get(
   "/category/:categoryName",
