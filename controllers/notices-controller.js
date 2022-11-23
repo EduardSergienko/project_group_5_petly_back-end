@@ -6,7 +6,7 @@ const getSearchNoticeController = async (req, res) => {
 
   const result = await notices.getSearchNotice(title, category);
 
-  if (result.length === 0) {
+  if (!result.length) {
     throw new ApiErrorsTemplate(404, "Not found");
   }
   res.json(result);

@@ -25,7 +25,7 @@ const searchNewsController = async (req, res) => {
 
   const result = await news.searchNews(title);
 
-  if (result.length === 0) {
+  if (!result.length) {
     throw new ApiErrorsTemplate(404, "Not found");
   }
   res.json(result);
