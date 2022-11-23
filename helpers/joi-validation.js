@@ -23,13 +23,16 @@ const loginSchema = Joi.object({
 const updateUserSchema = Joi.object({
   name: Joi.string(),
   email: Joi.string().email({ tlds: { allow: false } }),
-  location: Joi.string(),
+  location: Joi.string().allow("").optional(),
   phone: Joi.string().pattern(
     /(?=.*\+[0-9]{3}\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{4}$)/
   ),
-  dateOfBirth: Joi.string().pattern(
-    /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/
-  ),
+  dateOfBirth: Joi.string()
+    .pattern(
+      /^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/
+    )
+    .allow("")
+    .optional(),
   avatarURL: Joi.string(),
 });
 

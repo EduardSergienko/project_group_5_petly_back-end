@@ -9,7 +9,7 @@ const {
 } = require("../../helpers/joi-validation");
 const validateBody = require("../../middlewares/validate-body");
 const isValidIdMiddleware = require("../../middlewares/is-valid-id-middleware");
-const updateUserMiddleware = require("../../middlewares/update-user-middleware");
+const updateReqBodyAvatar = require("../../middlewares/update-user-middleware");
 const {
   uploadAvatarMiddleware,
 } = require("../../middlewares/upload-avatar-middleware");
@@ -36,7 +36,7 @@ router.patch(
   authenticate,
   isValidIdMiddleware,
   uploadAvatarMiddleware.single("avatar"),
-  updateUserMiddleware,
+  updateReqBodyAvatar,
   validateBody(updateUserSchema),
   asyncWrapper(ctrl.updateDataUserСontroller)
 );

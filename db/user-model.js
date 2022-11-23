@@ -20,7 +20,6 @@ const userSchema = new Schema(
     },
     location: {
       type: String,
-      required: [true, "city_region is required"],
     },
     phone: {
       type: String,

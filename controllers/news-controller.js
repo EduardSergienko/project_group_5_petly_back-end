@@ -1,4 +1,4 @@
-const getNews = require("../services/news-service");
+const news = require("../services/news-service");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
 const getNewsController = async (req, res) => {
@@ -11,7 +11,7 @@ const getNewsController = async (req, res) => {
   limit = parseInt(limit) > 9 ? 9 : parseInt(limit);
   const skip = (parseInt(page) - 1) * parseInt(limit);
 
-  const data = await getNews(skip, limit);
+  const data = await news.getNews(skip, limit);
 
   if (!data.length) {
     throw new ApiErrorsTemplate(404, "Not found");
@@ -20,4 +20,18 @@ const getNewsController = async (req, res) => {
   res.status(200).json({ data });
 };
 
-module.exports = getNewsController;
+const searchNewsController = async (req, res) => {
+  const { title } = req.query;
+
+  const result = await news.searchNews(title);
+
+  if (result.length === 0) {
+    throw new ApiErrorsTemplate(404, "Not found");
+  }
+  res.json(result);
+};
+
+module.exports = {
+  getNewsController,
+  searchNewsController,
+};
