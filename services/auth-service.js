@@ -13,7 +13,7 @@ const CreateUser = async (email, password, name, location, phone) => {
     );
     const user = new User(
       {
-        email,
+        email: email.toLowerCase(),
         password: hashPassword,
         name,
         location,
@@ -35,7 +35,10 @@ const CreateUser = async (email, password, name, location, phone) => {
 
 const login = async (email, password) => {
   try {
-    const [result] = await User.find({ email }, { createdAt: 0 }).populate({
+    const [result] = await User.find(
+      { email: email.toLowerCase() },
+      { createdAt: 0 }
+    ).populate({
       path: "myAnimal",
     });
 
@@ -50,6 +53,7 @@ const login = async (email, password) => {
 
     return result._doc;
   } catch (error) {
+    console.log(error);
     return error.message;
   }
 };
