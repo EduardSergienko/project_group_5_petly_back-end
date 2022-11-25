@@ -34,7 +34,6 @@ const getByCategory = async (category, skip, limit) => {
   try {
     const data = await Notice.find({ category }, modelNotice)
       .select({ __v: 0 })
-      .sort({ createdAt: "desc" })
       .skip(skip)
       .limit(limit);
     return data;
