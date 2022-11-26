@@ -5,6 +5,7 @@ const resizeAvatar = async (path) => {
   try {
     const avatar = await Jimp.read(`${path}`);
     avatar.resize(350, 288);
+    avatar.quality(90);
     avatar.write(path);
   } catch (error) {
     throw new ApiErrorsTemplate(400, "Unsupported MIME type");

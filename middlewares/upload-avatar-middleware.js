@@ -1,11 +1,14 @@
 const multer = require("multer");
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 const tempDir = path.join(__dirname, "..", "tmp");
 
 const storage = multer.diskStorage({
   destination: tempDir,
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
+    const [, extension] = file.originalname.split(".");
+
+    cb(null, `${uuidv4()}.${extension}`);
   },
 });
 
