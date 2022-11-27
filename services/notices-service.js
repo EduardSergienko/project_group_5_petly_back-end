@@ -31,9 +31,15 @@ const getSearchNotice = async (noticeTitle, category) => {
 const getByCategory = async (category, skip, limit) => {
   try {
     const data = await Notice.find({ category }, modelNotice)
-      .select({ __v: 0 })
-      .skip(skip)
-      .limit(limit);
+      .sort({ createdAt: "desc" })
+      .select({ __v: 0 });
+
+    // to fix sort by date for pagination
+
+    // .skip(skip)
+    // .limit(limit);
+
+    // to fix sort by date for pagination
     return data;
   } catch (error) {
     return error;
@@ -60,6 +66,7 @@ const getFavorite = async (_id) => {
     const [data] = await User.find({ _id }, { myFavorite: 1 }).populate({
       path: "myFavorite",
       fields: { myFavorite: 1 },
+      options: { sort: { created_at: -1 } },
       select: modelNotice,
     });
 
