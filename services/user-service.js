@@ -1,19 +1,22 @@
-const path = require("path");
 const fs = require("fs/promises");
-const { v4: uuidv4 } = require("uuid");
 const User = require("../db/user-model");
 const { Animal } = require("../db/animal-model");
-const resizeAvatar = require("../helpers/resize-avatar");
-const avatarsDir = path.join(__dirname, "..", "public", "avatars");
+const uploadAvatar = require("../helpers/cloudinary");
 
 const addAnimal = async (fields, owner) => {
   try {
-    const avatarName = `avatar-${uuidv4()}.png`;
-    const newAvatarPath = path.resolve(`${avatarsDir}/${avatarName}`);
-    await resizeAvatar(fields.avatarURL);
-    await fs.rename(fields.avatarURL, newAvatarPath);
+    if (fields.avatarURL) {
+      const avatarURL = await uploadAvatar(fields.avatarURL);
 
-    fields.avatarURL = path.join("avatars", avatarName);
+      if (avatarURL.error) {
+        await fs.unlink(fields.avatarURL);
+        throw new Error("Failed to update avatar");
+      }
+      const [avatar] = avatarURL;
+
+      fields.avatarURL = avatar.secure_url;
+    }
+
     const result = await Animal.create({ ...fields });
     await User.findByIdAndUpdate(
       { _id: owner },
@@ -51,7 +54,19 @@ const removeAnimal = async (_id) => {
 
 const updateUser = async (_id, fields) => {
   try {
-    const responce = await User.findByIdAndUpdate(
+    if (fields.avatarURL) {
+      const avatarURL = await uploadAvatar(fields.avatarURL);
+
+      if (avatarURL.error) {
+        await fs.unlink(fields.avatarURL);
+        throw new Error("Failed to update avatar");
+      }
+      const [avatar] = avatarURL;
+
+      fields.avatarURL = avatar.secure_url;
+    }
+
+    const response = await User.findByIdAndUpdate(
       { _id },
       { ...fields },
       {
@@ -66,24 +81,8 @@ const updateUser = async (_id, fields) => {
         },
       }
     );
-    return responce;
+    return response;
   } catch (error) {
-    return error.message;
-  }
-};
-
-const updateAvatar = async (_id, user) => {
-  try {
-    const avatarName = `avatar-${uuidv4()}.png`;
-    const newAvatarPath = path.resolve(`${avatarsDir}/${avatarName}`);
-    console.log(user.pathAvatar);
-    await resizeAvatar(user.pathAvatar);
-    await fs.rename(user.pathAvatar, newAvatarPath);
-
-    const avatarURL = path.join("avatars", avatarName);
-    return avatarURL;
-  } catch (error) {
-    await fs.unlink(user.pathAvatar);
     return error.message;
   }
 };
@@ -93,5 +92,4 @@ module.exports = {
   addAnimal,
   getCurrentUser,
   updateUser,
-  updateAvatar,
 };

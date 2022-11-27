@@ -10,7 +10,7 @@ const start = async () => {
       ignoreUndefined: true,
     });
     console.log("Database connection successful");
-    app.listen(process.env.PORT, () => {
+    app.listen(PORT, () => {
       console.log(`Server running. Use our API on port: ${PORT}`);
     });
   } catch (error) {

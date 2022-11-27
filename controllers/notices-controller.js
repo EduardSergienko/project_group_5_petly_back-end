@@ -114,10 +114,6 @@ const addNoticeController = async (req, res) => {
 
   const data = await notices.createNotice(notice);
 
-  if (data === "Unsupported MIME type") {
-    throw new ApiErrorsTemplate(400, "Unsupported MIME type");
-  }
-
   if (!data.title) {
     throw new ApiErrorsTemplate(400, "Error");
   }
