@@ -1,5 +1,3 @@
-const fs = require("fs/promises");
-
 const { ApiErrorsTemplate } = require("../helpers/errors");
 const userService = require("../services/user-service");
 
@@ -16,8 +14,8 @@ const addAnimalController = async (req, res) => {
   };
   const result = await userService.addAnimal(animal, owner);
 
-  if (result === "Unsupported MIME type") {
-    throw new ApiErrorsTemplate(400, "Unsupported MIME type");
+  if (result.length) {
+    throw new ApiErrorsTemplate(400, "Failed to create animal");
   }
 
   res.status(201).json(result);
@@ -47,20 +45,12 @@ const updateDataUserСontroller = async (req, res) => {
   const { id } = req.user;
 
   if (req.file) {
-    const userUrl = {
-      pathAvatar: req.file.path,
-    };
-
-    req.body.avatarURL = await userService.updateAvatar(id, userUrl);
-    if (!req.body.avatarURL.length) {
-      throw new ApiErrorsTemplate(400, "Failed to update avatar");
-    }
+    req.body.avatarURL = req.file.path;
   }
 
   const data = await userService.updateUser(id, req.body);
 
-  if (!data) {
-    await fs.unlink(req.body.avatarURL);
+  if (data.length) {
     throw new ApiErrorsTemplate(400, "Failed to update user data");
   }
   res.status(201).json({ data });

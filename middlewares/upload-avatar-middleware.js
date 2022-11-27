@@ -12,7 +12,24 @@ const storage = multer.diskStorage({
   },
 });
 
-const uploadAvatarMiddleware = multer({ storage });
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/jpg"
+  ) {
+    cb(null, true);
+  } else {
+    const error = { message: "Unsupported file format" };
+    cb(error, false);
+  }
+};
+
+const uploadAvatarMiddleware = multer({
+  storage,
+  limits: { fileSize: 1000000 },
+  fileFilter,
+});
 
 module.exports = {
   uploadAvatarMiddleware,

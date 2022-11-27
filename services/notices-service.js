@@ -1,10 +1,7 @@
 const { Notice } = require("../db/notices-model");
 const User = require("../db/user-model");
-const path = require("path");
 const fs = require("fs").promises;
-const { v4: uuidv4 } = require("uuid");
-const resizeAvatar = require("../helpers/resize-avatar");
-const avatarsDir = path.join(__dirname, "..", "public", "avatars");
+const uploadAvatar = require("../helpers/cloudinary");
 
 const modelNotice = {
   title: 1,
@@ -106,18 +103,22 @@ const removeFromFavorite = async (_id, noticeId) => {
 
 const createNotice = async (notice) => {
   try {
-    const avatarName = `avatar-${uuidv4()}.png`;
-    const newAvatarPath = path.resolve(`${avatarsDir}/${avatarName}`);
+    if (notice.petImageUrl) {
+      const avatarURL = await uploadAvatar(notice.petImageUrl);
 
-    await resizeAvatar(notice.petImageUrl);
-    await fs.rename(notice.petImageUrl, newAvatarPath);
+      if (avatarURL.error) {
+        await fs.unlink(notice.petImageUrl);
+        throw new Error("Failed to update avatar");
+      }
+      const [avatar] = avatarURL;
 
-    notice.petImageUrl = path.join("avatars", avatarName);
+      notice.petImageUrl = avatar.secure_url;
+    }
+
     const data = await Notice.create({ ...notice });
 
     return data;
   } catch (error) {
-    await fs.unlink(notice.petImageUrl);
     return error.message;
   }
 };
