@@ -14,16 +14,23 @@ const getSearchNoticeController = async (req, res) => {
 
 const getNoticesByCategoryController = async (req, res) => {
   const { categoryName: category } = req.params;
-  let { page = 1, limit = 9 } = req.query;
 
-  if (page <= 0) {
-    throw new ApiErrorsTemplate(400, "Page must be greater then 0");
-  }
+  // to fix sort by date for pagination
 
-  limit = parseInt(limit) > 9 ? 9 : parseInt(limit);
-  const skip = (parseInt(page) - 1) * parseInt(limit);
+  // let { page = 1, limit = 9 } = req.query;
 
-  const data = await notices.getByCategory(category, skip, limit);
+  // if (page <= 0) {
+  //   throw new ApiErrorsTemplate(400, "Page must be greater then 0");
+  // }
+
+  // limit = parseInt(limit) > 9 ? 9 : parseInt(limit);
+  // const skip = (parseInt(page) - 1) * parseInt(limit);
+
+  // const data = await notices.getByCategory(category, skip, limit);
+
+  // to fix sort by date for pagination
+
+  const data = await notices.getByCategory(category);
 
   if (!data.length) {
     throw new ApiErrorsTemplate(404, "Not found");
@@ -31,7 +38,6 @@ const getNoticesByCategoryController = async (req, res) => {
 
   res.status(200).json({
     data,
-    limit,
   });
 };
 
