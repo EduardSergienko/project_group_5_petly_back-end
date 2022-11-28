@@ -1,5 +1,5 @@
-const { Notice } = require("../db/notices-model");
-const User = require("../db/user-model");
+const { Notice } = require("../db-models/notices");
+const User = require("../db-models/user");
 const fs = require("fs").promises;
 const uploadAvatar = require("../helpers/cloudinary");
 
@@ -34,12 +34,6 @@ const getByCategory = async (category, skip, limit) => {
       .sort({ createdAt: "desc" })
       .select({ __v: 0 });
 
-    // to fix sort by date for pagination
-
-    // .skip(skip)
-    // .limit(limit);
-
-    // to fix sort by date for pagination
     return data;
   } catch (error) {
     return error;

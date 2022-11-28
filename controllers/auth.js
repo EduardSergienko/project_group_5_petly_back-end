@@ -1,6 +1,6 @@
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
-const { CreateUser, logout, login } = require("../services/auth-service");
+const { CreateUser, logout, login } = require("../services/auth");
 
 const registerСontroller = async (req, res) => {
   const { email, password: regPassword, name, location, phone } = req.body;

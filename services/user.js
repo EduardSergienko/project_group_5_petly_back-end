@@ -1,6 +1,6 @@
 const fs = require("fs/promises");
-const User = require("../db/user-model");
-const { Animal } = require("../db/animal-model");
+const User = require("../db-models/user");
+const { Animal } = require("../db-models/animal");
 const uploadAvatar = require("../helpers/cloudinary");
 
 const addAnimal = async (fields, owner) => {

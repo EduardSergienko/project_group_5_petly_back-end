@@ -1,4 +1,4 @@
-const getFriends = require("../services/friends-service");
+const getFriends = require("../services/friends");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
 const getFriendsController = async (req, res) => {

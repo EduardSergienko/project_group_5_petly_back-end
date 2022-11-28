@@ -1,4 +1,4 @@
-const User = require("../db/user-model");
+const User = require("../db-models/user");
 const bcrypt = require("bcryptjs");
 const { createToken } = require("../helpers/api-helpers");
 const gravatar = require("gravatar");

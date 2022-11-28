@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   getNewsController,
   searchNewsController,
-} = require("../../controllers/news-controller");
+} = require("../../controllers/news");
 const { asyncWrapper } = require("../../helpers/api-helpers");
 
 router.get("/", asyncWrapper(getNewsController));
