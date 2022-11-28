@@ -5,7 +5,7 @@ const {
   registerСontroller,
   loginСontroller,
   logoutСontroller,
-} = require("../../controllers/auth-controller");
+} = require("../../controllers/auth");
 const { authenticate } = require("../../middlewares/auth-middleware");
 const validateBody = require("../../middlewares/validate-body");
 const { registerSchema, loginSchema } = require("../../helpers/joi-validation");

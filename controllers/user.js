@@ -1,5 +1,5 @@
 const { ApiErrorsTemplate } = require("../helpers/errors");
-const userService = require("../services/user-service");
+const userService = require("../services/user");
 
 const addAnimalController = async (req, res) => {
   const { id: owner } = req.user;

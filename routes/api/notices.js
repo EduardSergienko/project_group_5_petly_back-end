@@ -1,5 +1,5 @@
 const express = require("express");
-const noticeCtrl = require("../../controllers/notices-controller.js");
+const noticeCtrl = require("../../controllers/notices.js");
 const { asyncWrapper } = require("../../helpers/api-helpers");
 const validateFormData = require("../../middlewares/validate-formdata-middleware");
 const { noticeSchema } = require("../../helpers/joi-validation");

@@ -1,4 +1,4 @@
-const news = require("../services/news-service");
+const news = require("../services/news");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
 const getNewsController = async (req, res) => {

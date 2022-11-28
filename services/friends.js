@@ -1,4 +1,4 @@
-const Friends = require("../db/friends-model");
+const Friends = require("../db-models/friends");
 
 const getFriends = async () => {
   try {
