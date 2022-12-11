@@ -7,14 +7,12 @@ const addAnimal = async (fields, owner) => {
   try {
     if (fields.avatarURL) {
       const avatarURL = await uploadAvatar(fields.avatarURL);
-
+      await fs.unlink(fields.avatarURL);
       if (avatarURL.error) {
-        await fs.unlink(fields.avatarURL);
         throw new Error("Failed to update avatar");
       }
 
       const [avatar] = avatarURL.eager;
-      await fs.unlink(fields.avatarURL);
       fields.avatarURL = avatar.secure_url;
       fields.imgPublic_id = avatarURL.public_id;
     }
@@ -59,14 +57,13 @@ const updateUser = async (_id, fields) => {
   try {
     if (fields.avatarURL) {
       const avatarURL = await uploadAvatar(fields.avatarURL, _id);
-
+      await fs.unlink(fields.avatarURL);
       if (avatarURL.error) {
-        await fs.unlink(fields.avatarURL);
         throw new Error("Failed to update avatar");
       }
 
       const [avatar] = avatarURL.eager;
-      await fs.unlink(fields.avatarURL);
+
       fields.avatarURL = avatar.secure_url;
       fields.imgPublic_id = avatarURL.public_id;
     }
