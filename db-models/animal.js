@@ -32,6 +32,10 @@ const AnimalSchema = new mongoose.Schema(
       ref: "user",
       require: true,
     },
+    imgPublic_id: {
+      type: String,
+      require: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );

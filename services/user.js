@@ -1,7 +1,7 @@
 const fs = require("fs/promises");
 const User = require("../db-models/user");
 const { Animal } = require("../db-models/animal");
-const uploadAvatar = require("../helpers/cloudinary");
+const { uploadAvatar, destroyImage } = require("../helpers/cloudinary");
 
 const addAnimal = async (fields, owner) => {
   try {
@@ -12,9 +12,11 @@ const addAnimal = async (fields, owner) => {
         await fs.unlink(fields.avatarURL);
         throw new Error("Failed to update avatar");
       }
-      const [avatar] = avatarURL;
 
+      const [avatar] = avatarURL.eager;
+      await fs.unlink(fields.avatarURL);
       fields.avatarURL = avatar.secure_url;
+      fields.imgPublic_id = avatarURL.public_id;
     }
 
     const result = await Animal.create({ ...fields });
@@ -46,6 +48,7 @@ const getCurrentUser = async (_id) => {
 const removeAnimal = async (_id) => {
   try {
     const result = await Animal.findByIdAndDelete(_id);
+    await destroyImage(result.imgPublic_id);
     return result;
   } catch (error) {
     return error;
@@ -55,15 +58,17 @@ const removeAnimal = async (_id) => {
 const updateUser = async (_id, fields) => {
   try {
     if (fields.avatarURL) {
-      const avatarURL = await uploadAvatar(fields.avatarURL);
+      const avatarURL = await uploadAvatar(fields.avatarURL, _id);
 
       if (avatarURL.error) {
         await fs.unlink(fields.avatarURL);
         throw new Error("Failed to update avatar");
       }
-      const [avatar] = avatarURL;
 
+      const [avatar] = avatarURL.eager;
+      await fs.unlink(fields.avatarURL);
       fields.avatarURL = avatar.secure_url;
+      fields.imgPublic_id = avatarURL.public_id;
     }
 
     const response = await User.findByIdAndUpdate(
@@ -81,6 +86,7 @@ const updateUser = async (_id, fields) => {
         },
       }
     );
+
     return response;
   } catch (error) {
     return error.message;

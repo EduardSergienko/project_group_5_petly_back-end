@@ -38,6 +38,10 @@ const userSchema = new Schema(
       default: "00.00.0000",
       formData: regBirthDay,
     },
+    imgPublic_id: {
+      type: String,
+      require: true,
+    },
     myFavorite: [{ type: Schema.Types.ObjectId, ref: "notice" }],
     myAnimal: [{ type: Schema.Types.ObjectId, ref: "animal" }],
   },

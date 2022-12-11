@@ -1,7 +1,7 @@
 const { Notice } = require("../db-models/notices");
 const User = require("../db-models/user");
 const fs = require("fs").promises;
-const uploadAvatar = require("../helpers/cloudinary");
+const { uploadAvatar, destroyImage } = require("../helpers/cloudinary");
 
 const modelNotice = {
   title: 1,
@@ -111,9 +111,11 @@ const createNotice = async (notice) => {
         await fs.unlink(notice.petImageUrl);
         throw new Error("Failed to update avatar");
       }
-      const [avatar] = avatarURL;
 
+      const [avatar] = avatarURL.eager;
+      await fs.unlink(notice.petImageUrl);
       notice.petImageUrl = avatar.secure_url;
+      notice.imgPublic_id = avatarURL.public_id;
     }
 
     const data = await Notice.create({ ...notice });
@@ -137,7 +139,8 @@ const getUserNotices = async (_id) => {
 
 const removeUserNotice = async (owner, id) => {
   try {
-    const data = await Notice.deleteOne({ _id: id, owner });
+    const data = await Notice.findByIdAndDelete({ _id: id, owner });
+    await destroyImage(data.imgPublic_id);
     return data;
   } catch (error) {
     return error.message;
