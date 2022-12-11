@@ -1,55 +1,101 @@
+const cookie = require("cookie");
 const { ApiErrorsTemplate } = require("../helpers/errors");
-
-const { CreateUser, logout, login } = require("../services/auth");
+const { createUser, login } = require("../services/auth");
+const {
+  refreshTokenTokenAge,
+  createTokens,
+} = require("../helpers/api-helpers");
 
 const registerСontroller = async (req, res) => {
   const { email, password: regPassword, name, location, phone } = req.body;
 
-  const { password, ...result } = await CreateUser(
-    email,
-    regPassword,
-    name,
-    location,
-    phone
-  );
+  const {
+    result: { password, ...data },
+    accessToken,
+    refreshToken,
+  } = await createUser(email, regPassword, name, location, phone);
 
-  if (result.status === Number("409")) {
+  if (data.status === Number("409")) {
     throw new ApiErrorsTemplate(409, "Email or phone in use");
   }
-  res.status(201).json({
-    result,
+
+  res.setHeader(
+    "Set-Cookie",
+    cookie.serialize("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: refreshTokenTokenAge,
+    })
+  );
+
+  res.status(200).json({
+    result: data,
+    token: accessToken,
   });
 };
 
 const loginСontroller = async (req, res) => {
   const { email: userEmail, password: loginPassword } = req.body;
 
-  const { password, ...result } = await login(userEmail, loginPassword);
+  const {
+    result: { password, ...data },
+    accessToken,
+    refreshToken,
+  } = await login(userEmail, loginPassword);
 
-  if (!result.token) {
+  if (!accessToken) {
     throw new ApiErrorsTemplate(401, "Email or password is wrong");
   }
 
+  res.setHeader(
+    "Set-Cookie",
+    cookie.serialize("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: refreshTokenTokenAge,
+    })
+  );
+
   res.status(201).json({
-    result,
+    result: data,
+    token: accessToken,
   });
 };
 
+const refreshTokenController = (req, res) => {
+  const { accessToken, refreshToken } = createTokens(req.user.id);
+
+  res.setHeader(
+    "Set-Cookie",
+    cookie.serialize("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 1000 * 60 * 60,
+    })
+  );
+
+  res.send({ accessToken });
+};
+
 const logoutСontroller = async (req, res) => {
-  const { id } = req.user;
-
-  const response = await logout(id);
-
-  if (response) {
-    throw new ApiErrorsTemplate(401, "Not authorized");
-  }
-  res.status(204).json({
-    message: "Logout success",
-  });
+  res.setHeader(
+    "Set-Cookie",
+    cookie.serialize("refreshToken", "", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 0,
+    })
+  );
+  res.sendStatus(200);
 };
 
 module.exports = {
   registerСontroller,
   loginСontroller,
   logoutСontroller,
+  refreshTokenController,
 };

@@ -129,7 +129,7 @@ const removeUserNoticesController = async (req, res) => {
   const { id: owner } = req.user;
 
   const data = await notices.removeUserNotice(owner, id);
-  console.log(data);
+
   if (data.length) {
     throw new ApiErrorsTemplate(404, "Not found");
   }

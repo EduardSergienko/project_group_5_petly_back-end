@@ -1,6 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const { errorHandler } = require("./helpers/api-helpers");
 const noticesRouter = require("./routes/api/notices.js");
@@ -8,14 +9,16 @@ const authRouter = require("./routes/api/auth");
 const userRouter = require("./routes/api/user");
 const newsRouter = require("./routes/api/news");
 const friendsRouter = require("./routes/api/friends");
+const corsOptions = require("./helpers/cors-options");
 
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/notices", noticesRouter);
 app.use("/api/auth", authRouter);

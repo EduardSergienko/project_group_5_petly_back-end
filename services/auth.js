@@ -1,9 +1,9 @@
 const User = require("../db-models/user");
 const bcrypt = require("bcryptjs");
-const { createToken } = require("../helpers/api-helpers");
+const { createTokens } = require("../helpers/api-helpers");
 const gravatar = require("gravatar");
 
-const CreateUser = async (email, password, name, location, phone) => {
+const createUser = async (email, password, name, location, phone) => {
   try {
     const hashPassword = await bcrypt.hash(password, bcrypt.genSaltSync(10));
     const avatarURL = gravatar.url(
@@ -23,11 +23,9 @@ const CreateUser = async (email, password, name, location, phone) => {
       { myFavorite: 0, myAnimal: 0, createdAt: 0 }
     );
 
-    const token = createToken(user._id);
-    user.token = token;
-    await user.save();
+    const { accessToken, refreshToken } = createTokens(user._id);
 
-    return user._doc;
+    return { result: user._doc, accessToken, refreshToken };
   } catch (error) {
     return error;
   }
@@ -46,27 +44,15 @@ const login = async (email, password) => {
       throw new Error();
     }
 
-    const token = createToken(result._id);
+    const { accessToken, refreshToken } = createTokens(result._id);
 
-    result.token = token;
-    await result.save();
-
-    return result._doc;
-  } catch (error) {
-    return error.message;
-  }
-};
-
-const logout = async (_id) => {
-  try {
-    await User.findByIdAndUpdate(_id, { token: "" });
+    return { result: result._doc, accessToken, refreshToken };
   } catch (error) {
     return error.message;
   }
 };
 
 module.exports = {
-  CreateUser,
-  logout,
+  createUser,
   login,
 };
