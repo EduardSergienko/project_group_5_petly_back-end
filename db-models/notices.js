@@ -68,6 +68,10 @@ const noticeScheme = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
     },
+    imgPublic_id: {
+      type: String,
+      require: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );
