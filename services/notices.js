@@ -106,14 +106,12 @@ const createNotice = async (notice) => {
   try {
     if (notice.petImageUrl) {
       const avatarURL = await uploadAvatar(notice.petImageUrl);
-
+      await fs.unlink(notice.petImageUrl);
       if (avatarURL.error) {
-        await fs.unlink(notice.petImageUrl);
         throw new Error("Failed to update avatar");
       }
 
       const [avatar] = avatarURL.eager;
-      await fs.unlink(notice.petImageUrl);
       notice.petImageUrl = avatar.secure_url;
       notice.imgPublic_id = avatarURL.public_id;
     }
