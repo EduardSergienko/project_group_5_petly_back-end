@@ -25,10 +25,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "phone"],
     },
-    token: {
-      type: String,
-      default: "",
-    },
     avatarURL: {
       type: String,
       required: true,

@@ -5,8 +5,12 @@ const {
   registerСontroller,
   loginСontroller,
   logoutСontroller,
+  refreshTokenController,
 } = require("../../controllers/auth");
-const { authenticate } = require("../../middlewares/auth-middleware");
+const {
+  authenticate,
+  verifyRefreshToken,
+} = require("../../middlewares/auth-middleware");
 const validateBody = require("../../middlewares/validate-body");
 const { registerSchema, loginSchema } = require("../../helpers/joi-validation");
 
@@ -17,4 +21,9 @@ router.post(
 );
 router.post("/login", validateBody(loginSchema), asyncWrapper(loginСontroller));
 router.get("/logout", authenticate, asyncWrapper(logoutСontroller));
+router.get(
+  "/refresh",
+  verifyRefreshToken,
+  asyncWrapper(refreshTokenController)
+);
 module.exports = router;
