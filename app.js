@@ -9,14 +9,14 @@ const authRouter = require("./routes/api/auth");
 const userRouter = require("./routes/api/user");
 const newsRouter = require("./routes/api/news");
 const friendsRouter = require("./routes/api/friends");
-// const corsOptions = require("./helpers/cors-options");
+const corsOptions = require("./helpers/cors-options");
 
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
