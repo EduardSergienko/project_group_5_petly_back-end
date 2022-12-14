@@ -12,15 +12,5 @@
 			"src": "/.*",
 			"dest": "server.js"
 		}
-	],
-	"images": {
-		"remotePatterns": [
-			{
-				"protocol": "https",
-				"hostname": "res.cloudinary.com",
-
-				"pathname": "dfikkprpt"
-			}
-		]
-	}
+	]
 }
