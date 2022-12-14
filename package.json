@@ -1,10 +1,10 @@
 {
 	"name": "project_group_5_petly_back-end",
 	"version": "1.0.0",
-	"main": "index.js",
+	"main": "server.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "./server.js",
+		"start": "cross-env NODE_ENV=production node ./server.js",
 		"start:dev": "cross-env NODE_ENV=development nodemon ./server.js",
 		"lint": "eslint **/*.js",
 		"lint:fix": "eslint --fix **/*.js"
