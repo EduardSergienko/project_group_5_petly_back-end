@@ -22,7 +22,6 @@ const registerСontroller = async (req, res) => {
   res.setHeader(
     "Set-Cookie",
     cookie.serialize("refreshToken", refreshToken, {
-      domain: "find-your-awesome-petly.netlify.app",
       httpOnly: true,
       secure: true,
       sameSite: "None",
@@ -52,7 +51,6 @@ const loginСontroller = async (req, res) => {
   res.setHeader(
     "Set-Cookie",
     cookie.serialize("refreshToken", refreshToken, {
-      domain: "find-your-awesome-petly.netlify.app",
       httpOnly: true,
       secure: true,
       sameSite: "None",
@@ -72,7 +70,6 @@ const refreshTokenController = (req, res) => {
   res.setHeader(
     "Set-Cookie",
     cookie.serialize("refreshToken", refreshToken, {
-      domain: "find-your-awesome-petly.netlify.app",
       httpOnly: true,
       secure: true,
       sameSite: "None",
@@ -87,7 +84,6 @@ const logoutСontroller = async (req, res) => {
   res.setHeader(
     "Set-Cookie",
     cookie.serialize("refreshToken", "", {
-      domain: "find-your-awesome-petly.netlify.app",
       httpOnly: true,
       secure: true,
       sameSite: "None",
