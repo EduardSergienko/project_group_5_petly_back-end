@@ -1,7 +1,7 @@
 const { ApiErrorsTemplate } = require("../helpers/errors");
 const jwt = require("jsonwebtoken");
 
-const accessTokenAge = 900;
+// const accessTokenAge = 900;
 const refreshTokenTokenAge = 120 * 120;
 
 const asyncWrapper = (controller) => {
@@ -19,9 +19,10 @@ const errorHandler = (error, req, res, next) => {
 };
 
 const createTokens = (id) => ({
-  accessToken: jwt.sign({ id }, process.env.SECRET_KEY, {
-    expiresIn: `${accessTokenAge}s`,
-  }),
+  accessToken: jwt.sign({ id }, process.env.SECRET_KEY),
+  // accessToken: jwt.sign({ id }, process.env.SECRET_KEY, {
+  //   expiresIn: `${accessTokenAge}s`,
+  // }),
   refreshToken: jwt.sign({ id }, process.env.SECRET_KEY_REFRESH, {
     expiresIn: `${refreshTokenTokenAge}s`,
   }),
