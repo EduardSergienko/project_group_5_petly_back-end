@@ -45,7 +45,7 @@ const getFavoriteNoticesController = async (req, res) => {
 
   const { myFavorite } = await notices.getFavorite(id);
 
-  if (!myFavorite) {
+  if (!myFavorite.length) {
     throw new ApiErrorsTemplate(404, "Not found");
   }
 
