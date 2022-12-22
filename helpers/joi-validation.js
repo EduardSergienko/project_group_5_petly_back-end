@@ -49,7 +49,7 @@ const noticeSchema = Joi.object({
 			otherwise: Joi.optional(),
 		}),
 
-	breed: Joi.string().min(1).max(24).default("-").when("category", {
+	breed: Joi.string().min(1).max(24).when("category", {
 		is: "sell",
 		then: Joi.required(),
 		otherwise: Joi.optional(),
