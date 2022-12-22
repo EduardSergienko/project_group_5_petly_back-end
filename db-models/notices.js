@@ -23,7 +23,7 @@ const noticeScheme = new mongoose.Schema(
 			default: "-",
 			required: [
 				function () {
-					return this.category === "sell";
+					return this.category === "sell" || "for-free";
 				},
 
 				"Date of birth is required",
@@ -37,7 +37,7 @@ const noticeScheme = new mongoose.Schema(
 			maxlength: 24,
 			required: [
 				function () {
-					return this.category === "sell";
+					return this.category === "sell" || "for-free";
 				},
 
 				"Breed is required",
@@ -57,7 +57,7 @@ const noticeScheme = new mongoose.Schema(
 			type: Number,
 			required: [
 				function () {
-					return this.category === "sell";
+					return this.category === "sell" || "for-free";
 				},
 				"Price is required",
 			],
