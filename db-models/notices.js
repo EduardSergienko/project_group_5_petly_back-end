@@ -40,7 +40,6 @@ const noticeScheme = new mongoose.Schema(
 
 				"Breed is required",
 			],
-			default: "-",
 		},
 		sex: {
 			type: String,
