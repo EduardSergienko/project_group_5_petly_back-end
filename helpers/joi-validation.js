@@ -53,7 +53,7 @@ const noticeSchema = Joi.object({
 		.min(1)
 		.max(24)
 		.when("category", {
-			is: "sell" || "for-free",
+			is: "sell" && "for-free",
 			then: Joi.required(),
 			otherwise: Joi.optional(),
 		}),
