@@ -59,11 +59,13 @@ const noticeSchema = Joi.object({
 	petImageUrl: Joi.any().required(),
 	comments: Joi.string().min(8).max(120).required(),
 	category: Joi.string().valid("sell", "lost-found", "for-free").required(),
-	price: Joi.number().min(1).when("category", {
-		is: "sell",
-		then: Joi.required(),
-		otherwise: Joi.optional(),
-	}),
+	price: Joi.number()
+		.min(1)
+		.when("category", {
+			is: "sell" || "for-free",
+			then: Joi.required(),
+			otherwise: Joi.optional(),
+		}),
 });
 
 const addAnimalJoiSchema = Joi.object({

@@ -57,7 +57,7 @@ const noticeScheme = new mongoose.Schema(
 			type: Number,
 			required: [
 				function () {
-					return this.category === "sell" || "for-free";
+					return this.category === "sell";
 				},
 				"Price is required",
 			],
