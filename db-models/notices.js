@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const handleSaveErrors = require("../helpers/handle-save-errors");
 
-// const regBirthDay =
-// 	/^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
+const regBirthDay =
+	/^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$/;
 
 const noticeScheme = new mongoose.Schema(
 	{
@@ -27,7 +27,8 @@ const noticeScheme = new mongoose.Schema(
 
 				"Date of birth is required",
 			],
-			// formData: regBirthDay || "",
+			formData: regBirthDay || "",
+			default: "-",
 		},
 		breed: {
 			type: String,
@@ -40,6 +41,7 @@ const noticeScheme = new mongoose.Schema(
 
 				"Breed is required",
 			],
+			default: "-",
 		},
 		sex: {
 			type: String,
