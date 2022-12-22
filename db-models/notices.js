@@ -32,6 +32,7 @@ const noticeScheme = new mongoose.Schema(
 		},
 		breed: {
 			type: String,
+			default: "-",
 			minlength: 1,
 			maxlength: 24,
 			required: [
