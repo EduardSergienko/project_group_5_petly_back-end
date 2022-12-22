@@ -28,7 +28,7 @@ const noticeScheme = new mongoose.Schema(
 				"Date of birth is required",
 			],
 			formData: regBirthDay || "",
-			default: "-",
+			// default: "-",
 		},
 		breed: {
 			type: String,
@@ -41,7 +41,7 @@ const noticeScheme = new mongoose.Schema(
 
 				"Breed is required",
 			],
-			default: "-",
+			// default: "-",
 		},
 		sex: {
 			type: String,
