@@ -49,11 +49,14 @@ const noticeSchema = Joi.object({
 			otherwise: Joi.optional(),
 		}),
 
-	breed: Joi.string().min(1).max(24).when("category", {
-		is: "sell",
-		then: Joi.required(),
-		otherwise: Joi.optional(),
-	}),
+	breed: Joi.string()
+		.min(1)
+		.max(24)
+		.when("category", {
+			is: "sell",
+			then: Joi.required(),
+			otherwise: Joi.optional().default("-"),
+		}),
 	sex: Joi.string().valid("male", "female").required(),
 	location: Joi.string().required(),
 	petImageUrl: Joi.any().required(),
