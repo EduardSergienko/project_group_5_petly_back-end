@@ -3,7 +3,10 @@ const noticeCtrl = require("../../controllers/notices.js");
 const { asyncWrapper } = require("../../helpers/api-helpers");
 const validateFormData = require("../../middlewares/validate-formdata-middleware");
 const { noticeSchema } = require("../../helpers/joi-validation");
-const { authenticate } = require("../../middlewares/auth-middleware");
+const {
+  authenticate,
+  checkAccessToken,
+} = require("../../middlewares/auth-middleware");
 const {
   uploadAvatarMiddleware,
 } = require("../../middlewares/upload-avatar-middleware");
@@ -11,6 +14,7 @@ const router = express.Router();
 
 router.get(
   "/category/search",
+  checkAccessToken,
   asyncWrapper(noticeCtrl.getSearchNoticeController)
 );
 

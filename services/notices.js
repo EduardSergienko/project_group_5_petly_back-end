@@ -13,21 +13,6 @@ const modelNotice = {
   price: 1,
 };
 
-const getSearchNotice = async (noticeTitle, category) => {
-  try {
-    const result = Notice.find(
-      {
-        title: { $regex: noticeTitle, $options: "i" },
-        category: category,
-      },
-      modelNotice
-    );
-    return result;
-  } catch (error) {
-    return error;
-  }
-};
-
 const getByCategory = async (category, skip, limit) => {
   try {
     const data = await Notice.find({ category }, modelNotice)
@@ -142,6 +127,46 @@ const removeUserNotice = async (owner, id) => {
     return data;
   } catch (error) {
     return error.message;
+  }
+};
+
+const getSearchNotice = async (noticeTitle, category, id = "") => {
+  try {
+    if (id && category === "own") {
+      const result = await Notice.find(
+        {
+          owner: id,
+          title: { $regex: noticeTitle, $options: "i" },
+        },
+        modelNotice
+      );
+      return result;
+    }
+
+    if (id && category === "favorite") {
+      const [{ myFavorite }] = await User.find(
+        { _id: id },
+        { myFavorite: 1 }
+      ).populate({
+        path: "myFavorite",
+        fields: { myFavorite: 1 },
+        select: modelNotice,
+        match: { title: { $regex: noticeTitle, $options: "i" } },
+      });
+
+      return myFavorite;
+    }
+
+    const result = await Notice.find(
+      {
+        title: { $regex: noticeTitle, $options: "i" },
+        category: category,
+      },
+      modelNotice
+    );
+    return result;
+  } catch (error) {
+    return error;
   }
 };
 

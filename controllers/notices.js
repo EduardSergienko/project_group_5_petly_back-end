@@ -1,17 +1,6 @@
 const notices = require("../services/notices");
 const { ApiErrorsTemplate } = require("../helpers/errors");
 
-const getSearchNoticeController = async (req, res) => {
-  const { category, title } = req.query;
-
-  const result = await notices.getSearchNotice(title, category);
-
-  if (!result.length) {
-    throw new ApiErrorsTemplate(404, "Not found");
-  }
-  res.json(result);
-};
-
 const getNoticesByCategoryController = async (req, res) => {
   const { categoryName: category } = req.params;
 
@@ -80,7 +69,7 @@ const removeFromFavoriteNoticeController = async (req, res) => {
   const { myFavorite } = await notices.removeFromFavorite(id, noticeId);
 
   if (!myFavorite) {
-    throw new ApiErrorsTemplate(404, "Not found test");
+    throw new ApiErrorsTemplate(404, "Not found");
   }
 
   res.status(200).json({ myFavorite });
@@ -135,6 +124,22 @@ const removeUserNoticesController = async (req, res) => {
   }
 
   res.status(200).json({ message: "notice deleted" });
+};
+
+const getSearchNoticeController = async (req, res) => {
+  const { category, title } = req.query;
+  const { id } = req.body;
+
+  if (!category) {
+    throw new ApiErrorsTemplate(400, "Category required");
+  }
+
+  const result = await notices.getSearchNotice(title, category, id);
+
+  if (!result.length) {
+    throw new ApiErrorsTemplate(404, "Not found");
+  }
+  res.json(result);
 };
 
 module.exports = {

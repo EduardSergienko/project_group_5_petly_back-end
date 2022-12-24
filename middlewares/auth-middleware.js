@@ -38,7 +38,19 @@ const verifyRefreshToken = (req, res, next) => {
   }
 };
 
+const checkAccessToken = (req, res, next) => {
+  const { authorization = "" } = req.headers;
+  const [, token] = authorization.split(" ");
+  if (token) {
+    const user = jwt.verify(token, SECRET_KEY);
+    req.body = user;
+  }
+
+  next();
+};
+
 module.exports = {
   authenticate,
   verifyRefreshToken,
+  checkAccessToken,
 };
